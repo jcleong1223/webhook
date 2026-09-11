@@ -13,6 +13,7 @@
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=figtree:300,400,500,600" rel="stylesheet" />
     {{ Laravel\Horizon\Horizon::css() }}
+    <link rel="stylesheet" href="{{ asset('admin/css/horizon-theme.css') }}">
     {{ Laravel\Horizon\Horizon::js() }}
 </head>
 <body>
@@ -125,6 +126,18 @@
                             </svg>
                             <span>API Clients</span>
                         </a>
+                    </li>
+                    <li class="nav-item ms-3 mt-1">
+                        <form method="POST" action="{{ route('logout') }}" class="m-0 p-0">
+                            @csrf
+                            <button type="submit" class="nav-link d-flex align-items-center w-100 border-0 bg-transparent text-start p-0 m-0 shadow-none font-inherit" style="cursor: pointer; color: inherit; font: inherit;">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="#eb3525" stroke="#eb3525" stroke-width="1" viewBox="0 0 20 20" style="width: 1.25rem; height: 1.25rem;" class="me-2" fill="currentColor">
+                                    <path fill-rule="evenodd" d="M3 4.25A2.25 2.25 0 015.25 2h5.5A2.25 2.25 0 0113 4.25v1a.75.75 0 01-1.5 0v-1a.75.75 0 00-.75-.75h-5.5a.75.75 0 00-.75.75v11.5c0 .414.336.75.75.75h5.5a.75.75 0 00.75-.75v-1a.75.75 0 011.5 0v1A2.25 2.25 0 0110.75 18h-5.5A2.25 2.25 0 013 15.75V4.25z" clip-rule="evenodd" />
+                                    <path fill-rule="evenodd" d="M19.78 9.47a.75.75 0 010 1.06l-3 3a.75.75 0 11-1.06-1.06l1.72-1.72H7a.75.75 0 010-1.5h10.44l-1.72-1.72a.75.75 0 111.06-1.06l3 3z" clip-rule="evenodd" />
+                                </svg>
+                                <span class="ms-1 text-danger">Sign Out</span>
+                            </button>
+                        </form>
                     </li>
                 </ul>
             </div>

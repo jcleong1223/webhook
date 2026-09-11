@@ -1,4 +1,9 @@
-@import 'tailwindcss';
+@import 'bootstrap/dist/css/bootstrap.min.css';
+/* @import 'tailwindcss'; */
+
+@import '@fortawesome/fontawesome-free/css/all.min.css';
+@import 'select2/dist/css/select2.min.css';
+@import 'datatables.net-bs5/css/dataTables.bootstrap5.min.css';
 
 @source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
 @source '../../storage/framework/views/*.php';
@@ -6,4 +11,67 @@
 @theme {
     --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
         'Segoe UI Symbol', 'Noto Color Emoji';
+}
+
+
+:root {
+    --bs-primary: #7746ec;
+    --bs-primary-rgb: 119, 70, 236;
+    --bs-link-color: #7746ec;
+    --bs-link-hover-color: #5b34c4;
+}
+
+.btn-primary {
+    --bs-btn-bg: #7746ec;
+    --bs-btn-border-color: #7746ec;
+    --bs-btn-hover-bg: #5b34c4;
+    --bs-btn-hover-border-color: #5b34c4;
+    --bs-btn-active-bg: #5b34c4;
+    --bs-btn-active-border-color: #5b34c4;
+    --bs-btn-disabled-bg: #7746ec;
+    --bs-btn-disabled-border-color: #7746ec;
+}
+
+.btn-outline-primary {
+    --bs-btn-color: #7746ec;
+    --bs-btn-border-color: #7746ec;
+    --bs-btn-hover-bg: #7746ec;
+    --bs-btn-hover-border-color: #7746ec;
+    --bs-btn-active-bg: #7746ec;
+    --bs-btn-active-border-color: #7746ec;
+}
+
+/* Base typography */
+body {
+    font-family: 'Instrument Sans', ui-sans-serif, system-ui, -apple-system,
+        'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+}
+
+/* Sidebar (replaces the styling Horizon's inlined CSS used to give it) */
+.sidebar .nav-link {
+    color: #4b5563;
+    padding: 0.5rem 0.75rem;
+    margin-bottom: 4px;
+    border-radius: 6px;
+}
+
+.sidebar .nav-link svg {
+    width: 1.25rem;
+    height: 1.25rem;
+    margin-right: 0.75rem;
+    fill: #9ca3af;
+}
+
+.sidebar .nav-link:hover {
+    background-color: #e5e7eb;
+    color: var(--bs-primary);
+}
+
+.sidebar .nav-link.active {
+    background-color: #e5e7eb;
+    color: var(--bs-primary);
+}
+
+.sidebar .nav-link.active svg {
+    fill: var(--bs-primary);
 }

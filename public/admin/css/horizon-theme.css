@@ -1,0 +1,62 @@
+/*
+ * Horizon theme override — loaded AFTER Horizon's inlined CSS so these win.
+ * Change --app-primary (and its dark/rgb variants) to re-theme the dashboard.
+ */
+
+:root {
+    /* >>> Your brand color — edit these three <<< */
+    --app-primary: #ff753e;
+    /* main */
+    --app-primary-dark: #f7910c;
+    /* hover / active */
+    --app-primary-rgb: 37, 99, 235;
+    /* same color as "R, G, B" */
+
+    /* Bootstrap 5.3 primary + link vars (.bg-primary, .text-primary, .border-primary, links) */
+    --bs-primary: var(--app-primary);
+    --bs-primary-rgb: var(--app-primary-rgb);
+    --bs-link-color: var(--app-primary);
+    --bs-link-hover-color: var(--app-primary-dark);
+}
+
+/* Horizon logo + any .fill-primary icon (your immediate ask) */
+.fill-primary {
+    fill: var(--app-primary);
+}
+
+/* Sidebar hover / active (Horizon maps these to $primary) */
+.sidebar .nav-item a:hover {
+    color: var(--app-primary);
+}
+
+.sidebar .nav-item a.active {
+    color: var(--app-primary);
+}
+
+.sidebar .nav-item a.active svg {
+    fill: var(--app-primary);
+}
+
+/* Primary buttons (Bootstrap 5.3 per-component vars) */
+.btn-primary {
+    --bs-btn-bg: var(--app-primary);
+    --bs-btn-border-color: var(--app-primary);
+    --bs-btn-hover-bg: var(--app-primary-dark);
+    --bs-btn-hover-border-color: var(--app-primary-dark);
+    --bs-btn-active-bg: var(--app-primary-dark);
+    --bs-btn-active-border-color: var(--app-primary-dark);
+}
+
+.btn-outline-primary {
+    --bs-btn-color: var(--app-primary);
+    --bs-btn-border-color: var(--app-primary);
+    --bs-btn-hover-bg: var(--app-primary);
+    --bs-btn-hover-border-color: var(--app-primary);
+    --bs-btn-active-bg: var(--app-primary);
+    --bs-btn-active-border-color: var(--app-primary);
+}
+
+/* Active "muted" button (Horizon: $btn-muted-active-bg = $primary) */
+.btn-muted.active {
+    background: var(--app-primary);
+}
