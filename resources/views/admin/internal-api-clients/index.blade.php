@@ -19,7 +19,7 @@
                         <th>Status</th>
                         <th>Allowed IPs</th>
                         <th>Last Used</th>
-                        <th>Created</th>
+                        <th>Created At</th>
                         <th>Action</th>
                     </tr>
                 </thead>

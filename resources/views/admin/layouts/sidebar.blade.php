@@ -69,13 +69,17 @@
                     <span class="nav-link px-0 text-uppercase small fw-semibold text-muted">Admin</span>
                 </li>
                 <li class="nav-item">
-                    <a href="{{ route('admin.api-clients.index') }}" class="nav-link d-flex align-items-center {{ ($active ?? '') === 'api-clients' ? 'active' : '' }}">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
-                            <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd" />
-                        </svg>
-                        <span>API Clients</span>
-                    </a>
-                </li>
+        <a href="{{ route('admin.api-clients.index') }}" class="nav-link d-flex align-items-center {{ ($active ?? '') === 'api-clients' ? 'active' : '' }}">
+            <i class="fa-solid fa-id-card me-2 fa-fw"></i>
+            <span>API Clients</span>
+        </a>
+    </li>
+    <li class="nav-item">
+        <a href="{{ route('admin.api-clients.index') }}" class="nav-link d-flex align-items-center {{ ($active ?? '') === 'api-clients' ? 'active' : '' }}">
+            <i class="fa-solid fa-bolt me-2 fa-fw"></i>
+            <span>Webhook Events</span>
+        </a>
+    </li>
                 <li class="nav-item ms-3 mt-1">
                         <form method="POST" action="{{ route('logout') }}" class="m-0 p-0">
                             @csrf

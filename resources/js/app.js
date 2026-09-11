@@ -9,7 +9,8 @@ import 'datatables.net-buttons-bs5';
 import JSZip from 'jszip';
 
 // Vendor styles — the admin master layout loads only app.js via @vite, so CSS
-// imported here is injected alongside it (DataTables + Buttons styling).
+// imported here is injected alongside it (FontAwesome + DataTables + Buttons).
+import '@fortawesome/fontawesome-free/css/all.min.css';
 import 'datatables.net-bs5/css/dataTables.bootstrap5.min.css';
 import 'datatables.net-buttons-bs5/css/buttons.bootstrap5.min.css';
 
