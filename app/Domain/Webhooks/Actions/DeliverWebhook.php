@@ -14,7 +14,6 @@ use App\Domain\Webhooks\Policies\WebhookRetryPolicy;
 use App\Domain\Webhooks\Policies\WebhookAlertPolicy;
 use App\Domain\Webhooks\Services\EndpointHealthService;
 use App\Domain\Webhooks\Services\WebhookPayloadBuilder;
-use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Log;
 
 /**
@@ -73,7 +72,23 @@ class DeliverWebhook
         $body     = json_encode($envelope, JSON_UNESCAPED_SLASHES);
 
         // ── Sign (§13) ────────────────────────────────────────────────────
-        $secret  = Crypt::decryptString($snapshot->signing_secret_encrypted);
+        // The 'encrypted' cast on WebhookEndpointSnapshot decrypts the secret
+        // on read; a manual Crypt::decryptString() here would double-decrypt.
+        try {
+            $secret = $snapshot->signing_secret_encrypted;
+        } catch (\Throwable $e) {
+            Log::error('DeliverWebhook: signing secret could not be decrypted.', [
+                'delivery_id' => $delivery->id,
+            ]);
+            $this->markFailedPermanently(
+                $delivery,
+                null,
+                'unexpected_delivery_exception',
+                'Endpoint signing secret could not be decrypted.',
+                0,
+            );
+            return;
+        }
         $signing = $this->signer->sign($body, $secret);
 
         // ── Assemble outgoing headers (§12) ──────────────────────────────

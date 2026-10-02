@@ -43,4 +43,9 @@ class InternalApiClientController extends Controller
             ->rawColumns(['action'])
             ->make(true);
     }
+
+    public function create()
+    {
+        return view('admin.internal-api-clients.create');
+    }
 }
