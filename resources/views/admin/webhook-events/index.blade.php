@@ -10,7 +10,67 @@
         </div>
 
         <div class="card-body card-bg-secondary ">
-            <div class="table-responsive"><table id="webhook-event-table" class="table table-hover table-responsive mb-0 w-100">
+            <div class="d-flex align-items-center justify-content-start gap-3 mb-2">
+                <div class="form-group">
+                    <label for="tenant" class="form-label small">Tenant</label>
+                    <select class="form-select form-select-sm @error('tenant') is-invalid @enderror" id="tenant"
+                            name="tenant">
+                        <option value="">All</option>
+                        @foreach ($tenants as $tenant)
+                            <option value="{{ $tenant }}" @selected(old('tenant') === $tenant)>{{ $tenant }}</option>
+                        @endforeach
+                    </select>
+                </div>
+                <div class="form-group ">
+                    <label for="merchant" class="form-label small">Merchant</label>
+                    <select class="form-select form-select-sm @error('merchant') is-invalid @enderror" id="merchant"
+                            name="merchant">
+                        <option value="">All</option>
+                        @foreach ($merchants as $merchant)
+                            <option value="{{ $merchant }}" @selected(old('merchant') === $merchant)>{{ $merchant }}</option>
+                        @endforeach
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="event_type" class="form-label small">Event Type</label>
+                    <select class="form-select form-select-sm @error('event_type') is-invalid @enderror" id="event_type"
+                            name="event_type">
+                        <option value="">All</option>
+                        @foreach ($eventTypes as $eventType)
+                            <option value="{{ $eventType }}" @selected(old('event_type') === $eventType)>{{ $eventType }}</option>
+                        @endforeach
+                    </select>
+                </div>
+
+                <div class="bootstrap-timepicker">
+                    <div class="form-group">
+                        <label for="start_date" class="form-label small">Start Date</label>
+                        <div class="input-group input-group-sm date" id='startdatetimepicker' data-target-input="nearest">
+                            <input type="date"
+                                class="form-control"
+                                data-inputmask-alias="datetime" data-inputmask-inputformat="dd/mm/yyyy"
+                                data-mask name="start_date" id="start_date" data-target="#startdatetimepicker" value="{{old('start_date')}}" required>
+                        </div>
+                    </div>
+                </div>
+                <div class="bootstrap-timepicker">
+                    <div class="form-group">
+                        <label for="end_date" class="form-label small">End Date</label>
+                        <div class="input-group input-group-sm date" id='enddatetimepicker' data-target-input="nearest">
+                            <input type="date"
+                                class="form-control "
+                                data-inputmask-alias="datetime" data-inputmask-inputformat="dd/mm/yyyy"
+                                data-mask name="end_date" id="end_date" data-target="#enddatetimepicker" value="{{old('end_date')}}" required>
+                        </div>
+                        <!-- /.input group -->
+                    </div>
+                </div>
+            </div>
+            <button class="btn btn-sm btn-primary mb-4">
+                <i class="fa-solid fa-sliders me-1"></i> Filter
+            </button>
+
+            <div class="table-responsive"><table id="webhook-event-table" class="table table-hover table-responsive w-100">
                 <thead>
                     <tr>
                         <th>No.</th>
@@ -108,6 +168,8 @@
                 { data: 'action', name: 'action', orderable: false, searchable: false },
             ],
         });
+
+        $('table#webhook-event-table').css('font-size', '14px');
 
         function escapeHtml(value) {
             return String(value ?? '').replace(/[&<>"']/g, function (c) {

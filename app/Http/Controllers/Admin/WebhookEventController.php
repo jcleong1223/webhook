@@ -18,7 +18,25 @@ class WebhookEventController extends Controller
 
     public function index()
     {
-        return view('admin.webhook-events.index');
+        $tenants = WebhookEvent::query()
+            ->whereNotNull('tenant_code')
+            ->distinct()
+            ->orderBy('tenant_code')
+            ->pluck('tenant_code');
+
+        $merchants = WebhookEvent::query()
+            ->whereNotNull('merchant_name')
+            ->distinct()
+            ->orderBy('merchant_name')
+            ->pluck('merchant_name');
+
+        $eventTypes = WebhookEvent::query()
+            ->whereNotNull('event_type')
+            ->distinct()
+            ->orderBy('event_type')
+            ->pluck('event_type');
+
+        return view('admin.webhook-events.index', compact('tenants', 'merchants', 'eventTypes'));
     }
 
     public function webhookEventsDatatable()
@@ -34,7 +52,7 @@ class WebhookEventController extends Controller
                 $payloadJson = e(json_encode($webhookEvent->payload));
 
                 return sprintf(
-                    '<a style="text-align: start;cursor: pointer; text-decoration: underline; color: #007bff;" class="btn webhook-event-payload-btn" data-webhook_payload="%s" data-id="%s" data-bs-toggle="modal" data-bs-target="#webhookEventPayloadModal">View payload</a>',
+                    '<a style="font-size: 14px; text-align: start;cursor: pointer; text-decoration: underline; color: #007bff;" class="btn webhook-event-payload-btn" data-webhook_payload="%s" data-id="%s" data-bs-toggle="modal" data-bs-target="#webhookEventPayloadModal">View payload</a>',
                     $payloadJson,
                     $webhookEvent->id
                 );
@@ -44,7 +62,7 @@ class WebhookEventController extends Controller
             })
             ->addColumn('action', function ($webhookEvent) {
                 return sprintf(
-                    '<a class="btn btn-primary webhook-event-view-btn" data-id="%s" data-bs-toggle="modal" data-bs-target="#webhookEventViewModal"><i class="fa fa-eye" aria-hidden="true"></i></a>',
+                '<a style="font-size: 12px; cursor: pointer" class="btn-sm btn-primary webhook-event-view-btn" data-id="%s" data-bs-toggle="modal" data-bs-target="#webhookEventViewModal"><i class="fa fa-eye" aria-hidden="true"></i></a>',
                     $webhookEvent->id
                 );
 
