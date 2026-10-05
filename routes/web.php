@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\InternalApiClientController;
+use App\Http\Controllers\Admin\WebhookEventController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -33,7 +34,15 @@ Route::middleware(['auth', 'role:super-administrator|support-administrator|tenan
 
         Route::middleware('permission:api-clients.manage')->prefix('api-clients')->as('api-clients.')->group(function () {
             Route::get('/', [InternalApiClientController::class, 'index'])->name('index');
+            Route::get('create', [InternalApiClientController::class, 'create'])->name('create');
+            Route::post('/', [InternalApiClientController::class, 'store'])->name('store');
             Route::get('datatable', [InternalApiClientController::class, 'apiClientsDatatable'])->name('datatable');
+        });
+
+        Route::middleware('permission:api-clients.manage')->prefix('webhook-events')->as('webhook-events.')->group(function () {
+            Route::get('/', [WebhookEventController::class, 'index'])->name('index');
+            Route::get('datatable', [WebhookEventController::class, 'webhookEventsDatatable'])->name('datatable');
+            Route::get('/{id}', [WebhookEventController::class, 'show'])->name('show');
         });
 
         // Super-admin only: internal API client credentials.
