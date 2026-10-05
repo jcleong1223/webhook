@@ -128,11 +128,11 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="{{ route('admin.api-clients.index') }}" class="nav-link d-flex align-items-center">
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
-                                <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd" />
-                            </svg>
-                            <span>API Clients</span>
+                        <a href="{{ route('admin.webhook-events.index') }}" class="nav-link d-flex align-items-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 20 20" fill="currentColor" class="me-10">
+            <path fill-rule="evenodd" d="M11.3 1.046A1 1 0 0112 2v5h4a1 1 0 01.82 1.57l-7 10A1 1 0 018 18v-5H4a1 1 0 01-.82-1.57l7-10a1 1 0 011.12-.384z" clip-rule="evenodd" />
+        </svg>
+                            <span>Webhook Events</span>
                         </a>
                     </li>
                     <li class="nav-item ms-3 mt-1">
