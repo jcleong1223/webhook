@@ -7,13 +7,14 @@
     <div class="card overflow-hidden">
         <div class="card-header d-flex align-items-center justify-content-between">
             <h2 class="h6 m-0">API Clients</h2>
+            <a href="{{ route('admin.api-clients.create') }}" class="btn btn-primary">Create API Client</a>
         </div>
 
-        <div class="card-body card-bg-secondary">
-            <table id="api-client-table" class="table table-hover mb-0 w-100">
+        <div class="card-body card-bg-secondary ">
+            <div class="table-responsive"><table id="api-client-table" class="table table-hover table-responsive mb-0 w-100">
                 <thead>
                     <tr>
-                        <th>ID</th>
+                        <th>No.</th>
                         <th>Name</th>
                         <th>Client ID</th>
                         <th>Status</th>
@@ -24,7 +25,8 @@
                     </tr>
                 </thead>
                 <tbody></tbody>
-            </table>
+            </table></div>
+
         </div>
     </div>
 @endsection
