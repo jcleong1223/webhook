@@ -69,15 +69,21 @@
         <span class="nav-link px-0 text-uppercase small fw-semibold text-muted">Admin</span>
     </li>
     <li class="nav-item">
-        <a href="{{ route('admin.api-clients.index') }}" class="nav-link d-flex align-items-center {{ ($active ?? '') === 'api-clients' ? 'active' : '' }}">
+        <a href="{{ route('admin.api-client.index') }}" class="nav-link d-flex align-items-center {{ ($active ?? '') === 'api-clients' ? 'active' : '' }}">
             <i class="fa-solid fa-id-card me-2 fa-fw"></i>
             <span>API Clients</span>
         </a>
     </li>
     <li class="nav-item">
-        <a href="{{ route('admin.webhook-events.index') }}" class="nav-link d-flex align-items-center {{ ($active ?? '') === 'webhook-events' ? 'active' : '' }}">
+        <a href="{{ route('admin.webhook-event.index') }}" class="nav-link d-flex align-items-center {{ ($active ?? '') === 'webhook-events' ? 'active' : '' }}">
             <i class="fa-solid fa-bolt me-2 fa-fw"></i>
             <span>Webhook Events</span>
+        </a>
+    </li>
+    <li class="nav-item">
+        <a href="{{ route('admin.webhook-delivery.index') }}" class="nav-link d-flex align-items-center {{ ($active ?? '') === 'webhook-events' ? 'active' : '' }}">
+            <i class="fa-solid fa-envelope me-2 fa-fw"></i>
+            <span>Webhook Deliveries</span>
         </a>
     </li>
     <li class="nav-item ms-3 mt-1">

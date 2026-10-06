@@ -1,4 +1,4 @@
-@php($active = 'api-clients')
+@php($active = 'api-client')
 @extends('admin.layouts.master')
 
 @section('title', 'Create API Client')
@@ -7,7 +7,7 @@
     <div class="card overflow-hidden">
         <div class="card-header d-flex align-items-center justify-content-between">
             <h2 class="h6 m-0">Create API Client</h2>
-            <a href="{{ route('admin.api-clients.index') }}" class="btn btn-sm btn-outline-secondary">
+            <a href="{{ route('admin.api-client.index') }}" class="btn btn-sm btn-outline-secondary">
                 <i class="fa-solid fa-arrow-left me-1"></i> Back
             </a>
         </div>
@@ -45,7 +45,7 @@
                 </div>
             @endif
 
-            <form method="POST" action="{{ route('admin.api-clients.store') }}" novalidate>
+            <form method="POST" action="{{ route('admin.api-client.store') }}" novalidate>
                 @csrf
 
                 {{-- Name (also used as the X-SGDP-Source header value) --}}
@@ -107,7 +107,7 @@
                 </div>
 
                 <div class="d-flex justify-content-end gap-2">
-                    <a href="{{ route('admin.api-clients.index') }}" class="btn btn-outline-secondary">Cancel</a>
+                    <a href="{{ route('admin.api-client.index') }}" class="btn btn-outline-secondary">Cancel</a>
                     <button type="submit" class="btn btn-primary">
                         <i class="fa-solid fa-plus me-1"></i> Create API Client
                     </button>

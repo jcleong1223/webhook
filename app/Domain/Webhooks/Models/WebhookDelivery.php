@@ -48,6 +48,29 @@ class WebhookDelivery extends Model
     const STATUS_FAILED_PERMANENTLY = 'failed_permanently';
     const STATUS_CANCELLED = 'cancelled';
 
+    public static $dateFields = [
+        'first_attempt_at' => [
+            'label' => 'First Attempt At',
+            'format' => 'Y-m-d H:i:s',
+        ],
+        'last_attempt_at' => [
+            'label' => 'Last Attempt At',
+            'format' => 'Y-m-d H:i:s',
+        ],
+        'next_attempt_at' => [
+            'label' => 'Next Attempt At',
+            'format' => 'Y-m-d H:i:s',
+        ],
+        'delivered_at' => [
+            'label' => 'Delivered At',
+            'format' => 'Y-m-d H:i:s',
+        ],
+        'failed_at' => [
+            'label' => 'Failed At',
+            'format' => 'Y-m-d H:i:s',
+        ],
+    ];
+
     protected static function booted(): void
     {
         static::creating(function (self $delivery) {
@@ -106,5 +129,10 @@ class WebhookDelivery extends Model
         }
 
         return false;
+    }
+
+    public function webhookEvent(): BelongsTo
+    {
+        return $this->belongsTo(WebhookEvent::class, 'webhook_event_id');
     }
 }

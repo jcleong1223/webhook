@@ -18,7 +18,7 @@ class InternalApiClientController extends Controller
 
     public function index()
     {
-        return view('admin.internal-api-clients.index');
+        return view('admin.internal-api-client.index');
     }
 
     public function apiClientsDatatable()
@@ -45,7 +45,7 @@ class InternalApiClientController extends Controller
                                             <a class="btn btn-warning" href="' . route('user.edit', $user->id) . '"><i class="fa fa-edit text-white" aria-hidden="true"></i></a>
                                             <button data-id="' . $user->id . '" class="btn btn-danger delete-btn" href="' . route('user.destroy', $user->id) . '"><i class="fa fa-trash" aria-hidden="true"></i></button>';
 
-                return '<a class="btn btn-primary" href="' . route('admin.api-clients.create', $client->id) . '"><i class="fa fa-search" aria-hidden="true"></i></a>';
+                return '<a class="btn btn-primary" href="' . route('admin.api-client.create', $client->id) . '"><i class="fa fa-search" aria-hidden="true"></i></a>';
             })
             ->rawColumns(['action'])
             ->make(true);
@@ -53,7 +53,7 @@ class InternalApiClientController extends Controller
 
     public function create()
     {
-        return view('admin.internal-api-clients.create');
+        return view('admin.internal-api-client.create');
     }
 
     public function store(Request $request)
@@ -91,7 +91,7 @@ class InternalApiClientController extends Controller
         ]);
 
         return redirect()
-            ->route('admin.api-clients.create')
+            ->route('admin.api-client.create')
             ->with('success', 'API client created successfully.')
             ->with('new_client_id', $clientId)
             ->with('new_client_secret', $plainSecret);

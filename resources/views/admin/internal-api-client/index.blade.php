@@ -1,4 +1,4 @@
-@php($active = 'api-clients')
+@php($active = 'api-client')
 @extends('admin.layouts.master')
 
 @section('title', 'API Clients')
@@ -7,7 +7,7 @@
     <div class="card overflow-hidden">
         <div class="card-header d-flex align-items-center justify-content-between">
             <h2 class="h6 m-0">API Clients</h2>
-            <a href="{{ route('admin.api-clients.create') }}" class="btn btn-primary">Create API Client</a>
+            <a href="{{ route('admin.api-client.create') }}" class="btn btn-primary">Create API Client</a>
         </div>
 
         <div class="card-body card-bg-secondary ">
@@ -48,7 +48,7 @@
             info: true,
             autoWidth: false,
             ajax: {
-                url: "{{ route('admin.api-clients.datatable') }}",
+                url: "{{ route('admin.api-client.datatable') }}",
                 type: "GET",
             },
             layout: {

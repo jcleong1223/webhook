@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\InternalApiClientController;
+use App\Http\Controllers\Admin\WebhookDeliveryController;
 use App\Http\Controllers\Admin\WebhookEventController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -22,7 +23,7 @@ Route::middleware(['auth', 'role:super-administrator|support-administrator|tenan
             $user = auth()->user();
 
             if ($user->can('api-clients.manage')) {
-                return redirect()->route('admin.api-clients.index');
+                return redirect()->route('admin.api-client.index');
             }
 
             if ($user->hasRole('support-administrator')) {
@@ -32,17 +33,23 @@ Route::middleware(['auth', 'role:super-administrator|support-administrator|tenan
             abort(403, 'No admin pages are available for your role yet.');
         })->name('home');
 
-        Route::middleware('permission:api-clients.manage')->prefix('api-clients')->as('api-clients.')->group(function () {
+        Route::middleware('permission:api-clients.manage')->prefix('api-client')->as('api-client.')->group(function () {
             Route::get('/', [InternalApiClientController::class, 'index'])->name('index');
             Route::get('create', [InternalApiClientController::class, 'create'])->name('create');
             Route::post('/', [InternalApiClientController::class, 'store'])->name('store');
             Route::get('datatable', [InternalApiClientController::class, 'apiClientsDatatable'])->name('datatable');
         });
 
-        Route::middleware('permission:api-clients.manage')->prefix('webhook-events')->as('webhook-events.')->group(function () {
+        Route::middleware('permission:api-clients.manage')->prefix('webhook-event')->as('webhook-event.')->group(function () {
             Route::get('/', [WebhookEventController::class, 'index'])->name('index');
             Route::get('datatable', [WebhookEventController::class, 'webhookEventsDatatable'])->name('datatable');
             Route::get('/{id}', [WebhookEventController::class, 'show'])->name('show');
+        });
+
+        Route::middleware('permission:api-clients.manage')->prefix('webhook-delivery')->as('webhook-delivery.')->group(function () {
+            Route::get('/', [WebhookDeliveryController::class, 'index'])->name('index');
+            Route::get('datatable', [WebhookDeliveryController::class, 'webhookEventsDatatable'])->name('datatable');
+            Route::get('/{id}', [WebhookDeliveryController::class, 'show'])->name('show');
         });
 
         // Super-admin only: internal API client credentials.

@@ -10,10 +10,11 @@ use Yajra\DataTables\Facades\DataTables;
 class WebhookEventController extends Controller
 {
     //
+    protected $folder = '';
 
     public function __construct()
     {
-
+        $this->folder = 'admin.webhook-event';
     }
 
     public function index()
@@ -36,12 +37,27 @@ class WebhookEventController extends Controller
             ->orderBy('event_type')
             ->pluck('event_type');
 
-        return view('admin.webhook-events.index', compact('tenants', 'merchants', 'eventTypes'));
+        return view($this->folder . '.index', compact('tenants', 'merchants', 'eventTypes'));
     }
 
-    public function webhookEventsDatatable()
+    public function webhookEventsDatatable(Request $request)
     {
-        $webhookEvent = WebhookEvent::query();
+        $webhookEvent = WebhookEvent::query()
+                        ->when($request->tenant, function ($query) use ($request) {
+                            return $query->where('tenant_code', $request->tenant);
+                        })
+                        ->when($request->merchant, function ($query) use ($request) {
+                            return $query->where('merchant_name', $request->merchant);
+                        })
+                        ->when($request->event_type, function ($query) use ($request) {
+                            return $query->where('event_type', $request->event_type);
+                        })
+                        ->when($request->start_date, function ($query) use ($request) {
+                            return $query->where('occurred_at', '>=', $request->start_date);
+                        })
+                        ->when($request->end_date, function ($query) use ($request) {
+                            return $query->where('occurred_at', '<=', $request->end_date);
+                        });
 
         return DataTables::of($webhookEvent)
             ->addIndexColumn()
@@ -71,11 +87,9 @@ class WebhookEventController extends Controller
             ->make(true);
     }
 
-    public function show($id)
+    public function show(int $id)
     {
         $webhookEvent = WebhookEvent::findOrFail($id);
-
-
 
         return response()->json([
             'webhookEvent' => $webhookEvent
