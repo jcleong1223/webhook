@@ -47,14 +47,19 @@ class WebhookEvent extends Model
     }
 
     /****** Relations ******/
-    public function deliveries(): HasMany
-    {
-        return $this->hasMany(WebhookDelivery::class);
-    }
+    // public function deliveries(): HasMany
+    // {
+    //     return $this->hasMany(WebhookDelivery::class);
+    // }
 
     /*** Latest delivery cycle (manual redelivery creates new cycles — spec §23.1) ***/
     public function delivery(): HasOne
     {
         return $this->hasOne(WebhookDelivery::class)->latestOfMany();
+    }
+
+    public function webhookDelivery(): HasOne
+    {
+        return $this->hasOne(WebhookDelivery::class);
     }
 }

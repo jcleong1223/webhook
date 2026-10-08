@@ -7,7 +7,7 @@
     <div class="card overflow-hidden">
         <div class="card-header d-flex align-items-center justify-content-between">
             <h2 class="h6 m-0">Create API Client</h2>
-            <a href="{{ route('admin.api-client.index') }}" class="btn btn-sm btn-outline-secondary">
+            <a href="{{ route('admin.api-client.index') }}" class="btn btn-sm text-light btn-outline-secondary">
                 <i class="fa-solid fa-arrow-left me-1"></i> Back
             </a>
         </div>

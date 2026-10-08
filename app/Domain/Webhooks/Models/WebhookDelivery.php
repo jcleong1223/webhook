@@ -49,6 +49,18 @@ class WebhookDelivery extends Model
     const STATUS_CANCELLED = 'cancelled';
 
     public static $dateFields = [
+        'created_at' => [
+            'label' => 'Created At',
+            'format' => 'Y-m-d H:i:s',
+        ],
+        'delivered_at' => [
+            'label' => 'Delivered At',
+            'format' => 'Y-m-d H:i:s',
+        ],
+        'failed_at' => [
+            'label' => 'Failed At',
+            'format' => 'Y-m-d H:i:s',
+        ],
         'first_attempt_at' => [
             'label' => 'First Attempt At',
             'format' => 'Y-m-d H:i:s',
@@ -61,15 +73,10 @@ class WebhookDelivery extends Model
             'label' => 'Next Attempt At',
             'format' => 'Y-m-d H:i:s',
         ],
-        'delivered_at' => [
-            'label' => 'Delivered At',
-            'format' => 'Y-m-d H:i:s',
-        ],
-        'failed_at' => [
-            'label' => 'Failed At',
-            'format' => 'Y-m-d H:i:s',
-        ],
+
     ];
+
+    public $appends = ['status_label'];
 
     protected static function booted(): void
     {
@@ -78,6 +85,30 @@ class WebhookDelivery extends Model
                 $delivery->id = 'dlv_' . Str::ulid();
             }
         });
+    }
+
+
+    /****** Attribute functions ******/
+    public function getStatusLabelAttribute()
+    {
+        switch ($this->status) {
+            case self::STATUS_PENDING:
+                return 'Pending';
+            case self::STATUS_QUEUED:
+                return 'Queued';
+            case self::STATUS_PROCESSING:
+                return 'Processing';
+            case self::STATUS_RETRY_SCHEDULED:
+                return 'Retry Scheduled';
+            case self::STATUS_DELIVERED:
+                return 'Delivered';
+            case self::STATUS_FAILED_PERMANENTLY:
+                return 'Failed Permanently';
+            case self::STATUS_CANCELLED:
+                return 'Cancelled';
+            default:
+                return 'Unknown';
+        }
     }
 
     /****** Relations ******/
@@ -129,10 +160,5 @@ class WebhookDelivery extends Model
         }
 
         return false;
-    }
-
-    public function webhookEvent(): BelongsTo
-    {
-        return $this->belongsTo(WebhookEvent::class, 'webhook_event_id');
     }
 }

@@ -75,13 +75,13 @@
         </a>
     </li>
     <li class="nav-item">
-        <a href="{{ route('admin.webhook-event.index') }}" class="nav-link d-flex align-items-center {{ ($active ?? '') === 'webhook-events' ? 'active' : '' }}">
+        <a href="{{ route('admin.webhook-event.index') }}" class="nav-link d-flex align-items-center {{ ($active ?? '') === 'webhook-event' ? 'active' : '' }}">
             <i class="fa-solid fa-bolt me-2 fa-fw"></i>
             <span>Webhook Events</span>
         </a>
     </li>
     <li class="nav-item">
-        <a href="{{ route('admin.webhook-delivery.index') }}" class="nav-link d-flex align-items-center {{ ($active ?? '') === 'webhook-events' ? 'active' : '' }}">
+        <a href="{{ route('admin.webhook-delivery.index') }}" class="nav-link d-flex align-items-center {{ ($active ?? '') === 'webhook-delivery' ? 'active' : '' }}">
             <i class="fa-solid fa-envelope me-2 fa-fw"></i>
             <span>Webhook Deliveries</span>
         </a>

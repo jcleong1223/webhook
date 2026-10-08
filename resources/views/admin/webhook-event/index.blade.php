@@ -158,6 +158,9 @@
                         <th>Aggregate ID</th>
                         <th>Source System</th>
                         <th>Payload</th>
+                        <th>Status</th>
+                        <th>Last HTTP Status</th>
+                        <th>Next Attempt At</th>
                         <th>Action</th>
                     </tr>
                 </thead>
@@ -273,6 +276,9 @@
                 { data: 'aggregate_id', name: 'aggregate_id', orderable: true, searchable: true },
                 { data: 'source_system', name: 'source_system', orderable: true, searchable: true },
                 { data: 'payload', name: 'payload', orderable: false, searchable: false },
+                { data: 'status', name: 'status', orderable: true, searchable: false },
+                { data: 'last_http_status', name: 'last_http_status', orderable: true, searchable: false },
+                { data: 'next_attempt_at', name: 'next_attempt_at', orderable: true, searchable: false },
                 { data: 'action', name: 'action', orderable: false, searchable: false },
             ],
         });
@@ -287,17 +293,20 @@
 
         function buildDetailHtml(evt) {
             var rows = [
-                ['Event ID', evt.id],
-                ['Tenant Code', evt.tenant_code],
-                ['Source System', evt.source_system],
-                ['Source ID', evt.source_instance_id],
-                ['Event Type', evt.event_type],
-                ['Merchant', evt.merchant_name],
-                ['Aggregate Type', evt.aggregate_type],
-                ['Aggregate ID', evt.aggregate_id],
-                ['Occurred At', evt.occurred_at],
-                ['Created At', evt.created_at],
-                ['api_version', evt.api_version],
+                ['Event ID', evt.id  ?? '-'],
+                ['Tenant Code', evt.tenant_code ?? '-'],
+                ['Source System', evt.source_system ?? '-'],
+                ['Source ID', evt.source_instance_id ?? '-'],
+                ['Event Type', evt.event_type ?? '-'],
+                ['Merchant', evt.merchant_name ?? '-'],
+                ['Aggregate Type', evt.aggregate_type ?? '-'],
+                ['Aggregate ID', evt.aggregate_id ?? '-'],
+                ['Status', evt.delivery.status_label ?? '-'],
+                ['Last HTTP Status', evt.delivery.last_http_status ?? '-'],
+                ['Next Attempt At', evt.delivery.next_attempt_at ?? '-'],
+                ['Occurred At', evt.occurred_at ?? '-'],
+                ['Created At', evt.created_at ?? '-'],
+                ['api_version', evt.api_version ?? '-'],
             ];
 
             return '<table class="table table-sm mb-0"><tbody>' +
@@ -331,13 +340,14 @@
             $body.html('<div class="text-center py-4"><div class="spinner-border" role="status"></div></div>');
 
             $.ajax({
-                url: "{{ url('admin/webhook-events') }}/" + id,
+                  url: "{{ url('admin/webhook-event') }}/" + id,
                 type: 'GET',
                 dataType: 'json',
                 headers: {
                     'Accept': 'application/json'
                 },
                 success: function (response) {
+                    console.log(response)
                     $body.html(buildDetailHtml(response.webhookEvent));
                 },
                 error: function () {
@@ -349,7 +359,6 @@
         $(document).on('click', '.event-filter-btn', function (e) {
 
             $('#webhook-event-table').DataTable().ajax.reload();
-            console.log('Table reloaded');
             e.preventDefault();
         });
 

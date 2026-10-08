@@ -22,7 +22,7 @@ class WebhookEventController extends Controller
     }
 
     /**
-     * POST /api/internal/v1/webhook-events
+     * POST /api/internal/v1/webhook-event
      *
      * Accepts an event from the legacy backoffice (spec §7.3):
      * 202 Accepted for new events, 200 OK with duplicate=true when the

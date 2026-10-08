@@ -40,11 +40,6 @@ class InternalApiClientController extends Controller
                 return $client->created_at ? $client->created_at->format('Y-m-d H:i:s') : '-';
             })
             ->addColumn('action', function ($client) {
-
-            return '<a class="btn btn-primary" href="' . route('user.show', $user->id) . '"><i class="fa fa-search" aria-hidden="true"></i></a>
-                                            <a class="btn btn-warning" href="' . route('user.edit', $user->id) . '"><i class="fa fa-edit text-white" aria-hidden="true"></i></a>
-                                            <button data-id="' . $user->id . '" class="btn btn-danger delete-btn" href="' . route('user.destroy', $user->id) . '"><i class="fa fa-trash" aria-hidden="true"></i></button>';
-
                 return '<a class="btn btn-primary" href="' . route('admin.api-client.create', $client->id) . '"><i class="fa fa-search" aria-hidden="true"></i></a>';
             })
             ->rawColumns(['action'])

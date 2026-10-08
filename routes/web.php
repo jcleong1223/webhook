@@ -48,7 +48,7 @@ Route::middleware(['auth', 'role:super-administrator|support-administrator|tenan
 
         Route::middleware('permission:api-clients.manage')->prefix('webhook-delivery')->as('webhook-delivery.')->group(function () {
             Route::get('/', [WebhookDeliveryController::class, 'index'])->name('index');
-            Route::get('datatable', [WebhookDeliveryController::class, 'webhookEventsDatatable'])->name('datatable');
+            Route::get('datatable', [WebhookDeliveryController::class, 'webhookDeliveriesDatatable'])->name('datatable');
             Route::get('/{id}', [WebhookDeliveryController::class, 'show'])->name('show');
         });
 

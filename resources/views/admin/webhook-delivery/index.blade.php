@@ -1,4 +1,4 @@
-@php($active = 'webhook-event')
+@php($active = 'webhook-delivery')
 @extends('admin.layouts.master')
 
 @section('title', 'Webhook Deliveries')
@@ -83,27 +83,37 @@
                 </div>
 
                 <div class="form-group">
+                    <label for="event_status" class="form-label small">Event Status</label>
+                    <select class="form-select form-select-sm @error('event_status') is-invalid @enderror" id="event_status"
+                            name="event_status">
+                        <option value="">All</option>
+                        @foreach ($statuses as $status)
+                            <option value="{{ $status }}" @selected(old('event_status') === $status)>{{ $status }}</option>
+                        @endforeach
+                    </select>
+                </div>
+
+                <div class="form-group">
                     <label for="event_type" class="form-label small">Event Type</label>
                     <select class="form-select form-select-sm @error('event_type') is-invalid @enderror" id="event_type"
                             name="event_type">
                         <option value="">All</option>
-                        @foreach ($statuses as $status)
-                            <option value="{{ $status }}" @selected(old('event_type') === $status)>{{ $status }}</option>
+                        @foreach ($events as $event)
+                            <option value="{{ $event }}" @selected(old('event_type') === $event)>{{ $event }}</option>
                         @endforeach
                     </select>
                 </div>
 
                 <div class='form-group d-flex bg-secondary p-2 rounded-3 gap-2'>
                     <div class="form-group">
-                    <label for="event_type" class="form-label small">Date Type</label>
-                    <select class="form-select form-select-sm @error('event_type') is-invalid @enderror" id="event_type"
-                            name="event_type">
-                        <option value="">All</option>
-                        @foreach ($statuses as $status)
-                            <option value="{{ $status }}" @selected(old('event_type') === $status)>{{ $status }}</option>
-                        @endforeach
-                    </select>
-                </div>
+                        <label for="date_type" class="form-label small">Date </label>
+                        <select class="form-select form-select-sm @error('date_type') is-invalid @enderror" id="date_type"
+                                name="date_type">
+                            @foreach ($datesColumns as $idx => $datesColumn)
+                                <option value="{{ $idx }}" @selected(old('date_type') === $idx)>{{ $datesColumn['label'] }}</option>
+                            @endforeach
+                        </select>
+                    </div>
 
                     <div class="bootstrap-timepicker">
                         <div class="form-group">
@@ -141,26 +151,34 @@
                 </div> --}}
             </div>
             <div class="d-flex align-items-center justify-content-start gap-3 mb-2">
-                <button class="btn btn-sm btn-primary mb-4 event-filter-btn">
-                <i class="fa-solid fa-sliders me-1"></i> Filter
-            </button>
-            <button class="btn btn-sm btn-danger mb-4 text-white clear-event-filter-btn">
-                <i class="fa-solid fa-close me-1"></i> Reset Filter
-            </button>
+                <button class="btn btn-sm btn-primary mb-4 delivery-filter-btn">
+                    <i class="fa-solid fa-sliders me-1"></i> Filter
+                </button>
+                <button class="btn btn-sm btn-danger mb-4 text-white clear-delivery-filter-btn">
+                    <i class="fa-solid fa-close me-1"></i> Reset Filter
+                </button>
             </div>
 
 
-            <div class="table-responsive"><table id="webhook-event-table" class="table table-hover table-responsive w-100">
+            <div class="table-responsive"><table id="webhook-delivery-table" class="table table-hover table-responsive w-100">
                 <thead>
                     <tr>
                         <th>No.</th>
-                        <th>Created At</th>
                         <th>Tenant</th>
                         <th>Event ID</th>
-                        <th>Endpoint Snapshot</th>
+                        <th>Endpoint Snapshot ID</th>
+                        <th>Event</th>
                         <th>Status</th>
                         <th>Attempt</th>
-                        <th>Payload</th>
+                        <th>First Attempt At</th>
+                        <th>Last Attempt At</th>
+                        <th>Next Attempt At</th>
+                        <th>Delivered At</th>
+                        <th>Failed At</th>
+                        <th>Last Http Status</th>
+                        <th>Last Error Code</th>
+                        <th>Last Error Message</th>
+                        <th>Created At</th>
                         <th>Action</th>
                     </tr>
                 </thead>
@@ -169,47 +187,13 @@
 
         </div>
     </div>
-
-    <div class="modal fade" id="webhookEventPayloadModal" tabindex="-1" role="dialog" aria-labelledby="webhookEventPayloadModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg modal-dialog-scrollable" role="document">
-            <div class="modal-content">
-                <div class="modal-header bg-navy">
-                    <h5 class="modal-title" id="webhookEventPayloadModalLabel">Webhook Event Payload</h5>
-                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <pre class="mb-0"><code id="webhookEventPayloadContent" class="text-break"></code></pre>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="modal fade" id="webhookEventViewModal" tabindex="-1" role="dialog" aria-labelledby="webhookEventViewModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg modal-dialog-scrollable" role="document">
-            <div class="modal-content">
-                <div class="modal-header bg-navy">
-                    <h5 class="modal-title" id="webhookEventViewModalLabel">Webhook Event Detail</h5>
-                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <div><p>Text</p></div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                </div>
-            </div>
-        </div>
-    </div>
 @endsection
 
 
 @section('script')
 <script>
     document.addEventListener('DOMContentLoaded', function () {
-        $('#webhook-event-table').DataTable({
+        $('#webhook-delivery-table').DataTable({
             processing: true,
             serverSide: true,
             stateSave: true,
@@ -225,13 +209,14 @@
             dom: 'Bfrtip',
             autoWidth: false,
             ajax: {
-                url: "{{ route('admin.webhook-event.datatable') }}",
+                url: "{{ route('admin.webhook-delivery.datatable') }}",
                 type: "GET",
                 data: function(d){
-                    console.log($('#tenant').val());
+                    console.log($('#date_type').val())
                     d.tenant = $('#tenant').val();
-                    d.merchant = $('#merchant').val();
+                    d.event_status = $('#event_status').val();
                     d.event_type = $('#event_type').val();
+                    d.date_type = $('#date_type').val();
                     d.start_date = $('#start_date').val();
                     d.end_date = $('#end_date').val();
 				},
@@ -265,22 +250,30 @@
                     'colvis',
                 ],
             columnDefs: [
-                { orderable: true, targets: [1] },
+                { orderable: true, targets: [15] },
             ],
             columns: [
                 { data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, searchable: false },
-                { data: 'occurred_at', name: 'occurred_at', orderable: true, searchable: true },
-                { data: 'tenant_code', name: 'tenant_code', orderable: true, searchable: true },
-                { data: 'merchant_name', name: 'merchant_name', orderable: true, searchable: true },
+                { data: 'tenant_id', name: 'tenant_id', orderable: true, searchable: true },
+                { data: 'webhook_event_id', name: 'webhook_event_id', orderable: true, searchable: true },
+                { data: 'endpoint_snapshot_id', name: 'endpoint_snapshot_id', orderable: true, searchable: true },
                 { data: 'event_type', name: 'event_type', orderable: true, searchable: true },
-                { data: 'aggregate_id', name: 'aggregate_id', orderable: true, searchable: true },
-                { data: 'source_system', name: 'source_system', orderable: true, searchable: true },
-                { data: 'payload', name: 'payload', orderable: false, searchable: false },
+                { data: 'status', name: 'status', orderable: true, searchable: true },
+                { data: 'attempt_count', name: 'attempt_count', orderable: true, searchable: true },
+                { data: 'first_attempt_at', name: 'first_attempt_at', orderable: true, searchable: true },
+                { data: 'last_attempt_at', name: 'last_attempt_at', orderable: true, searchable: true },
+                { data: 'next_attempt_at', name: 'next_attempt_at', orderable: true, searchable: true },
+                { data: 'delivered_at', name: 'delivered_at', orderable: true, searchable: true },
+                { data: 'failed_at', name: 'failed_at', orderable: true, searchable: true },
+                { data: 'last_http_status', name: 'last_http_status', orderable: true, searchable: true },
+                { data: 'last_error_code', name: 'last_error_code', orderable: true, searchable: true },
+                { data: 'last_error_message', name: 'last_error_message', orderable: true, searchable: true },
+                { data: 'created_at', name: 'created_at', orderable: true, searchable: false },
                 { data: 'action', name: 'action', orderable: false, searchable: false },
             ],
         });
 
-        $('table#webhook-event-table').css('font-size', '14px');
+        $('table#webhook-delivery-table').css('font-size', '14px');
 
         function escapeHtml(value) {
             return String(value ?? '').replace(/[&<>"']/g, function (c) {
@@ -288,28 +281,6 @@
             });
         }
 
-        function buildDetailHtml(evt) {
-            var rows = [
-                ['Event ID', evt.id],
-                ['Tenant Code', evt.tenant_code],
-                ['Source System', evt.source_system],
-                ['Source ID', evt.source_instance_id],
-                ['Event Type', evt.event_type],
-                ['Merchant', evt.merchant_name],
-                ['Aggregate Type', evt.aggregate_type],
-                ['Aggregate ID', evt.aggregate_id],
-                ['Occurred At', evt.occurred_at],
-                ['Created At', evt.created_at],
-                ['api_version', evt.api_version],
-            ];
-
-            return '<table class="table table-sm mb-0"><tbody>' +
-                rows.map(function (r) {
-                    return '<tr><th style="width:35%">' + escapeHtml(r[0]) +
-                        '</th><td>' + escapeHtml(r[1]) + '</td></tr>';
-                }).join('') +
-                '</tbody></table>';
-        }
 
         $(document).on('click', '.webhook-event-payload-btn', function () {
             var raw = $(this).attr('data-webhook_payload');
@@ -326,44 +297,19 @@
             }
         });
 
-        $('#webhookEventViewModal').on('show.bs.modal', function (event) {
-            var button = $(event.relatedTarget)
-            var id     = button.data('id');
-            var $body  = $(this).find('.modal-body');
-
-            $body.html('<div class="text-center py-4"><div class="spinner-border" role="status"></div></div>');
-
-            $.ajax({
-                url: "{{ url('admin/webhook-events') }}/" + id,
-                type: 'GET',
-                dataType: 'json',
-                headers: {
-                    'Accept': 'application/json'
-                },
-                success: function (response) {
-                    $body.html(buildDetailHtml(response.webhookEvent));
-                },
-                error: function () {
-                    $body.html('<div class="alert alert-danger mb-0">Unable to load event details.</div>');
-                }
-            });
-        });
-
-        $(document).on('click', '.event-filter-btn', function (e) {
-
-            $('#webhook-event-table').DataTable().ajax.reload();
-            console.log('Table reloaded');
+        $(document).on('click', '.delivery-filter-btn', function (e) {
+            $('#webhook-delivery-table').DataTable().ajax.reload();
             e.preventDefault();
         });
 
-        $(document).on('click', '.clear-event-filter-btn', function (e) {
+        $(document).on('click', '.clear-delivery-filter-btn', function (e) {
             $('#tenant').val('');
-            $('#merchant').val('');
+            $('#event_status').val('');
             $('#event_type').val('');
             $('#start_date').val('');
             $('#end_date').val('');
             $('#daterange-filter').val('');
-            $('#webhook-event-table').DataTable().ajax.reload();
+            $('#webhook-delivery-table').DataTable().ajax.reload();
 
             e.preventDefault();
         });
