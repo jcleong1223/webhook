@@ -86,6 +86,12 @@
             <span>Webhook Deliveries</span>
         </a>
     </li>
+    <li class="nav-item">
+        <a href="{{ route('admin.endpoint-health.index') }}" class="nav-link d-flex align-items-center {{ ($active ?? '') === 'endpoint-health' ? 'active' : '' }}">
+            <i class="fa-solid fa-stethoscope me-2 fa-fw"></i>
+            <span>Endpoints Health</span>
+        </a>
+    </li>
     <li class="nav-item ms-3 mt-1">
         <form method="POST" action="{{ route('logout') }}" class="m-0 p-0">
             @csrf

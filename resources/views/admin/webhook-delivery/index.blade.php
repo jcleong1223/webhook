@@ -212,7 +212,6 @@
                 url: "{{ route('admin.webhook-delivery.datatable') }}",
                 type: "GET",
                 data: function(d){
-                    console.log($('#date_type').val())
                     d.tenant = $('#tenant').val();
                     d.event_status = $('#event_status').val();
                     d.event_type = $('#event_type').val();
@@ -274,28 +273,6 @@
         });
 
         $('table#webhook-delivery-table').css('font-size', '14px');
-
-        function escapeHtml(value) {
-            return String(value ?? '').replace(/[&<>"']/g, function (c) {
-                return { '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' }[c];
-            });
-        }
-
-
-        $(document).on('click', '.webhook-event-payload-btn', function () {
-            var raw = $(this).attr('data-webhook_payload');
-            var $target = $('#webhookEventPayloadContent');
-
-            if (!$target.length) {
-                return;
-            }
-
-            try {
-                $target.text(JSON.stringify(JSON.parse(raw), null, 2));
-            } catch (err) {
-                $target.text(raw || '');
-            }
-        });
 
         $(document).on('click', '.delivery-filter-btn', function (e) {
             $('#webhook-delivery-table').DataTable().ajax.reload();

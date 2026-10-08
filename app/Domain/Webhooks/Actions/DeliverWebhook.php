@@ -149,10 +149,6 @@ class DeliverWebhook
         ]);
     }
 
-    // ─────────────────────────────────────────────────────────────────────
-    //  State resolution
-    // ─────────────────────────────────────────────────────────────────────
-
     /**
      * Determine the outcome and update the delivery accordingly.
      *

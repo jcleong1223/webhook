@@ -3,6 +3,7 @@
 namespace App\Domain\Webhooks\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class WebhookEndpointSnapshot extends Model
@@ -32,5 +33,14 @@ class WebhookEndpointSnapshot extends Model
     public function deliveries(): HasMany
     {
         return $this->hasMany(WebhookDelivery::class, 'endpoint_snapshot_id');
+    }
+
+    public function health(): BelongsTo
+    {
+        return $this->belongsTo(
+            WebhookEndpointHealth::class,
+            'legacy_webhook_id',
+            'legacy_webhook_id'
+        )->where('tenant_id', $this->tenant_id);
     }
 }

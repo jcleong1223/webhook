@@ -2,6 +2,8 @@
 
 use App\Http\Controllers\Admin\InternalApiClientController;
 use App\Http\Controllers\Admin\WebhookDeliveryController;
+use App\Http\Controllers\Admin\WebhookEndpointHealthController;
+use App\Http\Controllers\Admin\WebhookEndpointSnapshotController;
 use App\Http\Controllers\Admin\WebhookEventController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -51,6 +53,17 @@ Route::middleware(['auth', 'role:super-administrator|support-administrator|tenan
             Route::get('datatable', [WebhookDeliveryController::class, 'webhookDeliveriesDatatable'])->name('datatable');
             Route::get('/{id}', [WebhookDeliveryController::class, 'show'])->name('show');
         });
+
+        Route::middleware('permission:api-clients.manage')->prefix('webhook-endpoint-snapshot')->as('webhook-endpoint-snapshot.')->group(function () {
+            Route::get('/{id}', [WebhookEndpointSnapshotController::class, 'show'])->name('show');
+        });
+
+        Route::middleware('permission:api-clients.manage')->prefix('endpoint-health')->as('endpoint-health.')->group(function () {
+            Route::get('/', [WebhookEndpointHealthController::class, 'index'])->name('index');
+            Route::get('datatable', [WebhookEndpointHealthController::class, 'endpointHealthDatatable'])->name('datatable');
+            Route::get('/{id}', [WebhookEndpointHealthController::class, 'show'])->name('show');
+        });
+
 
         // Super-admin only: internal API client credentials.
 

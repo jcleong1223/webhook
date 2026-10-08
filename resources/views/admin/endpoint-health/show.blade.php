@@ -13,7 +13,6 @@
         </div>
 
         <div class="card-body card-bg-secondary">
-            {{-- One-time credentials panel, shown only right after a successful create --}}
             @if (session('new_client_id') && session('new_client_secret'))
                 <div class="alert alert-success border-success">
                     <div class="d-flex align-items-center mb-2">
@@ -549,8 +548,6 @@
             })
         })
     });
-
-
 
 </script>
 @endsection

@@ -3,6 +3,8 @@
 namespace App\Domain\Webhooks\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class WebhookEndpointHealth extends Model
 {
@@ -29,8 +31,59 @@ class WebhookEndpointHealth extends Model
         'last_alert_at' => 'datetime',
     ];
 
+    protected $hidden = [
+        'endpoint_url_hash'
+    ];
+
     CONST STATUS_HEALTHY = 'healthy';
     CONST STATUS_DEGRADED = 'degraded';
     CONST STATUS_DOWN = 'down';
     CONST STATUS_DISABLED = 'disabled';
+
+    public static $dateColumns = [
+        'created_at' => [
+            'label' => 'Created At',
+            'format' => 'Y-m-d H:i:s',
+        ],
+        'degraded_at' => [
+            'label' => 'Degraded At',
+            'format' => 'Y-m-d H:i:s',
+        ],
+        'last_alert_at' => [
+            'label' => 'Last Alert At',
+            'format' => 'Y-m-d H:i:s',
+        ],
+        'last_failure_at' => [
+            'label' => 'Last Failure At',
+            'format' => 'Y-m-d H:i:s',
+        ],
+        'last_success_at' => [
+            'label' => 'Last Success At',
+            'format' => 'Y-m-d H:i:s',
+        ],
+        'recovered_at' => [
+            'label' => 'Recovered At',
+            'format' => 'Y-m-d H:i:s',
+        ],
+
+    ];
+
+    public function snapshots(): HasMany
+    {
+        return $this->hasMany(
+            WebhookEndpointSnapshot::class,
+            'legacy_webhook_id',
+            'legacy_webhook_id'
+        );
+    }
+
+    public function latestSnapshot(): HasOne
+    {
+        return $this->hasOne(
+            WebhookEndpointSnapshot::class,
+            'legacy_webhook_id',
+            'legacy_webhook_id'
+        )->where('tenant_id', $this->tenant_id)
+        ->latestOfMany();
+    }
 }
