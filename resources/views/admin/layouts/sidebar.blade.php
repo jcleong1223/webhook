@@ -71,25 +71,31 @@
     <li class="nav-item">
         <a href="{{ route('admin.api-client.index') }}" class="nav-link d-flex align-items-center {{ ($active ?? '') === 'api-clients' ? 'active' : '' }}">
             <i class="fa-solid fa-id-card me-2 fa-fw"></i>
-            <span>API Clients</span>
+            <span>API Client</span>
         </a>
     </li>
     <li class="nav-item">
         <a href="{{ route('admin.webhook-event.index') }}" class="nav-link d-flex align-items-center {{ ($active ?? '') === 'webhook-event' ? 'active' : '' }}">
             <i class="fa-solid fa-bolt me-2 fa-fw"></i>
-            <span>Webhook Events</span>
+            <span>Webhook Event</span>
         </a>
     </li>
     <li class="nav-item">
         <a href="{{ route('admin.webhook-delivery.index') }}" class="nav-link d-flex align-items-center {{ ($active ?? '') === 'webhook-delivery' ? 'active' : '' }}">
             <i class="fa-solid fa-envelope me-2 fa-fw"></i>
-            <span>Webhook Deliveries</span>
+            <span>Webhook Delivery</span>
         </a>
     </li>
     <li class="nav-item">
         <a href="{{ route('admin.endpoint-health.index') }}" class="nav-link d-flex align-items-center {{ ($active ?? '') === 'endpoint-health' ? 'active' : '' }}">
             <i class="fa-solid fa-stethoscope me-2 fa-fw"></i>
             <span>Endpoints Health</span>
+        </a>
+    </li>
+    <li class="nav-item">
+        <a href="{{ route('admin.delivery-attempt.index') }}" class="nav-link d-flex align-items-center {{ ($active ?? '') === 'delivery-attempt' ? 'active' : '' }}">
+            <i class="fa-solid fa-clock me-2 fa-fw"></i>
+            <span>Attempt History</span>
         </a>
     </li>
     <li class="nav-item ms-3 mt-1">

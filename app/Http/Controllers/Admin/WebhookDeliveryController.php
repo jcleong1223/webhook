@@ -157,7 +157,7 @@ class WebhookDeliveryController extends Controller
                     $webhookDelivery->id
                 );
             })
-            ->rawColumns(['action', 'status', 'last_http_status', 'last_error_code'])
+            ->rawColumns(['action', 'last_http_status', 'last_error_code'])
             ->orderColumn('event_type', 'webhook_events.event_type $1')
             ->make(true);
     }

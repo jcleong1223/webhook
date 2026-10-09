@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\InternalApiClientController;
+use App\Http\Controllers\Admin\WebhookDeliveryAttemptController;
 use App\Http\Controllers\Admin\WebhookDeliveryController;
 use App\Http\Controllers\Admin\WebhookEndpointHealthController;
 use App\Http\Controllers\Admin\WebhookEndpointSnapshotController;
@@ -63,6 +64,11 @@ Route::middleware(['auth', 'role:super-administrator|support-administrator|tenan
             Route::get('/', [WebhookEndpointHealthController::class, 'index'])->name('index');
             Route::get('datatable', [WebhookEndpointHealthController::class, 'endpointHealthDatatable'])->name('datatable');
             Route::get('/{healthId}', [WebhookEndpointHealthController::class, 'show'])->name('show');
+        });
+
+        Route::middleware('permission:api-clients.manage')->prefix('delivery-attempt')->as('delivery-attempt.')->group(function () {
+            Route::get('/', [WebhookDeliveryAttemptController::class, 'index'])->name('index');
+            Route::get('datatable', [WebhookDeliveryAttemptController::class, 'deliveryAttemptDatatable'])->name('datatable');
         });
 
 

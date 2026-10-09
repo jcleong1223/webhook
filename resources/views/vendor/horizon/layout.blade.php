@@ -124,7 +124,7 @@
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
                                 <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd" />
                             </svg>
-                            <span>API Clients</span>
+                            <span>API Client</span>
                         </a>
                     </li>
                     <li class="nav-item">
@@ -132,15 +132,31 @@
                             <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 20 20" fill="currentColor" class="me-10">
                                 <path fill-rule="evenodd" d="M11.3 1.046A1 1 0 0112 2v5h4a1 1 0 01.82 1.57l-7 10A1 1 0 018 18v-5H4a1 1 0 01-.82-1.57l7-10a1 1 0 011.12-.384z" clip-rule="evenodd" />
                             </svg>
-                            <span>Webhook Events</span>
+                            <span>Webhook Event</span>
                         </a>
                     </li>
                     <li class="nav-item">
                         <a href="{{ route('admin.webhook-delivery.index') }}" class="nav-link d-flex align-items-center">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 20 20" fill="currentColor" class="me-10">
-                                <path fill-rule="evenodd" d="M11.3 1.046A1 1 0 0112 2v5h4a1 1 0 01.82 1.57l-7 10A1 1 0 018 18v-5H4a1 1 0 01-.82-1.57l7-10a1 1 0 011.12-.384z" clip-rule="evenodd" />
+                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 512 512" fill="currentColor" class="me-10 flex-shrink-0" aria-hidden="true">
+                                <path d="M48 64C21.5 64 0 85.5 0 112c0 15.1 7.1 29.3 19.2 38.4l217.6 163.2c11.4 8.5 27 8.5 38.4 0l217.6-163.2c12.1-9.1 19.2-23.3 19.2-38.4 0-26.5-21.5-48-48-48H48zM0 176v224c0 26.5 21.5 48 48 48h416c26.5 0 48-21.5 48-48V176L294.4 338.4c-22.8 17.1-54 17.1-76.8 0L0 176z"/>
                             </svg>
-                            <span>Webhook Deliveries</span>
+                            <span>Webhook Delivery</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{{ route('admin.webhook-delivery.index') }}" class="nav-link d-flex align-items-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 512 512" fill="currentColor" class="me-10 flex-shrink-0" aria-hidden="true">
+                                <path d="M64 0C46.3 0 32 14.3 32 32V96c0 70.7 57.3 128 128 128h32c70.7 0 128-57.3 128-128V32c0-17.7-14.3-32-32-32s-32 14.3-32 32V96c0 35.3-28.7 64-64 64H160c-35.3 0-64-28.7-64-64V32c0-17.7-14.3-32-32-32zM224 256c-88.4 0-160-71.6-160-160V80H0V96c0 123.7 100.3 224 224 224h16v128c0 17.7 14.3 32 32 32h32c53 0 96-43 96-96s-43-96-96-96h-16V256H224zm192 128a32 32 0 1 1 64 0 32 32 0 1 1 -64 0z"/>
+                            </svg>
+                            <span>Endpoint Health</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{{ route('admin.endpoint-health.index') }}" class="nav-link d-flex align-items-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 512 512" fill="currentColor" class="me-10 flex-shrink-0" aria-hidden="true">
+                                <path d="M64 0C46.3 0 32 14.3 32 32V96c0 70.7 57.3 128 128 128h32c70.7 0 128-57.3 128-128V32c0-17.7-14.3-32-32-32s-32 14.3-32 32V96c0 35.3-28.7 64-64 64H160c-35.3 0-64-28.7-64-64V32c0-17.7-14.3-32-32-32zM224 256c-88.4 0-160-71.6-160-160V80H0V96c0 123.7 100.3 224 224 224h16v128c0 17.7 14.3 32 32 32h32c53 0 96-43 96-96s-43-96-96-96h-16V256H224zm192 128a32 32 0 1 1 64 0 32 32 0 1 1 -64 0z"/>
+                            </svg>
+                            <span>Attempt History</span>
                         </a>
                     </li>
                     <li class="nav-item ms-3 mt-1">
