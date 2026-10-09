@@ -141,7 +141,7 @@
                     <tr>
                         <th>No.</th>
                         <th>Attempt No.</th>
-                        <th>Duration (seconds)</th>
+                        <th>Duration (millisecond)</th>
                         <th>HTTP Status</th>
                         <th>Error Type</th>
                         <th>Error Message</th>
