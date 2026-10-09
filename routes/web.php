@@ -55,13 +55,14 @@ Route::middleware(['auth', 'role:super-administrator|support-administrator|tenan
         });
 
         Route::middleware('permission:api-clients.manage')->prefix('webhook-endpoint-snapshot')->as('webhook-endpoint-snapshot.')->group(function () {
+            Route::get('datatable', [WebhookEndpointSnapshotController::class, 'endpointSnapshotDatatable'])->name('datatable');
             Route::get('/{id}', [WebhookEndpointSnapshotController::class, 'show'])->name('show');
         });
 
         Route::middleware('permission:api-clients.manage')->prefix('endpoint-health')->as('endpoint-health.')->group(function () {
             Route::get('/', [WebhookEndpointHealthController::class, 'index'])->name('index');
             Route::get('datatable', [WebhookEndpointHealthController::class, 'endpointHealthDatatable'])->name('datatable');
-            Route::get('/{id}', [WebhookEndpointHealthController::class, 'show'])->name('show');
+            Route::get('/{healthId}', [WebhookEndpointHealthController::class, 'show'])->name('show');
         });
 
 

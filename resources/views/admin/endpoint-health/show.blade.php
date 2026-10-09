@@ -1,13 +1,13 @@
-@php($active = 'webhook-delivery')
+@php($active = 'endpoint-health')
 @extends('admin.layouts.master')
 
-@section('title', 'Webhook Delivery')
+@section('title', 'Endpoint Health')
 
 @section('content')
-    <div class="card overflow-hidden">
+    <div class="card overflow-hidden mb-5">
         <div class="card-header d-flex align-items-center justify-content-between">
-            <h2 class="h6 m-0">Webhook Delivery</h2>
-            <a href="{{ route('admin.webhook-delivery.index') }}" class="text-light btn btn-sm btn-outline-secondary">
+            <h2 class="h6 m-0">Endpoint Health</h2>
+            <a href="{{ route('admin.endpoint-health.index') }}" class="text-light btn btn-sm btn-outline-secondary">
                 <i class="fa-solid fa-arrow-left me-1 "></i> Back
             </a>
         </div>
@@ -50,9 +50,9 @@
                         <div class="col-12 col-sm-4">
                             <div class="info-box">
                                 <div class="info-box-content">
-                                    <span class="info-box-text text-center text-muted">Webhook Delivery ID</span>
+                                    <span class="info-box-text text-center text-muted">Endpoint Health ID</span>
                                     <input
-                                        type="text" class="form-control bg-secondary mt-2" value={{ $webhookDelivery->id }} readonly
+                                        type="text" class="form-control bg-secondary mt-2" value={{ $endpointHealth->health_id ?? '-' }} readonly
                                     >
                                 </div>
                             </div>
@@ -62,7 +62,7 @@
                                 <div class="info-box-content">
                                     <span class="info-box-text text-center text-muted">Tenant ID</span>
                                     <input
-                                        type="text" class="form-control bg-secondary mt-2" value={{ $webhookDelivery->tenant_id }} readonly
+                                        type="text" id='tn_id' class="form-control bg-secondary mt-2" value={{ $endpointHealth->tenant_id ?? '-' }} readonly
                                     >
                                 </div>
                             </div>
@@ -70,9 +70,9 @@
                         <div class="col-12 col-sm-4">
                             <div class="info-box">
                                 <div class="info-box-content">
-                                    <span class="info-box-text text-center text-muted">Merchant</span>
+                                    <span class="info-box-text text-center text-muted">Legacy Webhook ID</span>
                                     <input
-                                        type="text" class="form-control bg-secondary mt-2" value={{ $webhookDelivery->event->merchant_id }} readonly
+                                        type="text" id='legacy_webhk_id' class="form-control bg-secondary mt-2" value={{ $endpointHealth->legacy_webhook_id ?? '-' }} readonly
                                     >
                                 </div>
                             </div>
@@ -87,50 +87,11 @@
                         <div class="col-12 col-sm-4">
                             <div class="info-box">
                                 <div class="info-box-content">
-                                    <span class="info-box-text text-center text-muted">Event ID</span>
-                                    <div class="input-group mt-2">
-                                        <input type="text" class="form-control bg-secondary" value={{ $webhookDelivery->webhook_event_id }} readonly aria-label="Recipient's username" aria-describedby="button-addon2">
-                                        <button class="btn btn-outline-primary button-view-detail" type="button" data-click-type="webhook-event" data-id="{{ $webhookDelivery->webhook_event_id }}" data-bs-toggle="modal" data-bs-target="#webhookDeliveryShowModal"><i class="fa-solid fa-eye me-1"></i></button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-12 col-sm-4">
-                            <div class="info-box">
-                                <div class="info-box-content">
-                                    <span class="info-box-text text-center text-muted">Endpoint Snapshot ID</span>
-                                    <div class="input-group mt-2">
-                                        <input type="text" class="form-control bg-secondary" value={{ $webhookDelivery->endpoint_snapshot_id }} readonly aria-label="Recipient's username" aria-describedby="button-addon2">
-                                        <button class="btn btn-outline-primary button-view-detail" type="button" data-click-type="webhook-snapshot" data-id="{{ $webhookDelivery->endpoint_snapshot_id }}" data-bs-toggle="modal" data-bs-target="#webhookDeliveryShowModal"><i class="fa-solid fa-eye me-1"></i></button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-12 col-sm-4">
-                            <div class="info-box">
-                                <div class="info-box-content">
-                                    <span class="info-box-text text-center text-muted">Attempt Count</span>
-                                    <input
-                                        type="text" class="form-control bg-secondary mt-2" value={{ $webhookDelivery->attempt_count }} readonly
-                                    >
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="col-12 col-md-12">
-                    <div class="row my-4">
-                        <div class="col-12 col-sm-4">
-                            <div class="info-box">
-                                <div class="info-box-content">
-                                    <span class="info-box-text text-center text-muted">First Attempt At</span>
+                                    <span class="info-box-text text-center text-muted">Name</span>
                                     <input
                                         type="text"
                                         class="form-control bg-secondary mt-2"
-                                        value="{{ Carbon\Carbon::parse($webhookDelivery->first_attempt_at)->format('Y-m-d H:i:s') }}"
+                                        value="{{ $endpointHealth->snapshot_name ?? '-' }}"
                                         readonly
                                     >
                                 </div>
@@ -139,118 +100,32 @@
                         <div class="col-12 col-sm-4">
                             <div class="info-box">
                                 <div class="info-box-content">
-                                    <span class="info-box-text text-center text-muted">Last Attempt At</span>
+                                    <span class="info-box-text text-center text-muted">URL</span>
                                     <input
                                         type="text"
                                         class="form-control bg-secondary mt-2"
-                                        value="{{ Carbon\Carbon::parse($webhookDelivery->last_attempt_at)->format('Y-m-d H:i:s') }}"
+                                        value="{{ $endpointHealth->snapshot_url ?? '-' }}"
                                         readonly
                                     >
                                 </div>
                             </div>
                         </div>
-                        <div class="col-12 col-sm-4">
-                            <div class="info-box">
-                                <div class="info-box-content">
-                                    <span class="info-box-text text-center text-muted">Next Attempt At</span>
-                                    <input
-                                        type="text"
-                                        class="form-control bg-secondary mt-2"
-                                        value="{{ Carbon\Carbon::parse($webhookDelivery->next_attempt_at)->format('Y-m-d H:i:s') }}"
-                                        readonly
-                                    >
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-
-            <div class="row">
-                <div class="col-12 col-md-12">
-                    <div class="row my-4">
-                        <div class="col-12 col-sm-4">
-                            <div class="info-box">
-                                <div class="info-box-content">
-                                    <span class="info-box-text text-center text-muted">Delivered At</span>
-                                    <input
-                                        type="text"
-                                        class="form-control bg-secondary mt-2"
-                                        value="{{ Carbon\Carbon::parse($webhookDelivery->delivered_at)->format('Y-m-d H:i:s') }}"
-                                        readonly
-                                    >
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-12 col-sm-4">
-                            <div class="info-box">
-                                <div class="info-box-content">
-                                    <span class="info-box-text text-center text-muted">Failed At</span>
-                                    <input
-                                        type="text"
-                                        class="form-control bg-secondary mt-2"
-                                        value="{{ Carbon\Carbon::parse($webhookDelivery->failed_at)->format('Y-m-d H:i:s') }}"
-                                        readonly
-                                    >
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-12 col-sm-4">
-                            <div class="info-box">
-                                <div class="info-box-content">
-                                    <span class="info-box-text text-center text-muted">Last HTTP Status</span>
-                                    <input
-                                        type="text"
-                                        class="form-control bg-secondary mt-2 font-monospace"
-                                        value="{{ $webhookDelivery->last_http_status ?? '-' }}"
-                                        readonly
-                                    >
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="col-12 col-md-12">
-                    <div class="row my-3">
-                        <div class="col-12 col-sm-4">
-                            <div class="info-box">
-                                <div class="info-box-content">
-                                    <span class="info-box-text text-center text-muted">Last Error Code</span>
-                                    <input
-                                        type="text"
-                                        class="form-control bg-secondary mt-2 font-monospace"
-                                        value="{{ $webhookDelivery->last_error_code ?? '-' }}"
-                                        readonly
-                                    >
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-12 col-sm-4">
-                            <div class="info-box">
-                                <div class="info-box-content">
-                                    <span class="info-box-text text-center text-muted">Last Response Duration</span>
-                                    <input
-                                        type="text"
-                                        class="form-control bg-secondary mt-2"
-                                        value="{{ $webhookDelivery->last_response_duration_ms ?? '-' }}"
-                                        readonly
-                                    >
-                                </div>
-                            </div>
-                        </div>
-
                         <div class="col-12 col-sm-4">
                             <div class="info-box">
                                 <div class="info-box-content">
                                     <span class="info-box-text text-center text-muted">Status</span>
-                                    <input
-                                        type="text" class="form-control bg-secondary mt-2" value={{ $webhookDelivery->status_label }} readonly
-                                    >
+                                    <div class="input-group mt-2">
+                                        <?php
+                                            $colorLabel = match ($endpointHealth->health_status) {
+                                                App\Domain\Webhooks\Enums\EndpointHealthStatus::HEALTHY->value => 'text-success',
+                                                App\Domain\Webhooks\Enums\EndpointHealthStatus::DEGRADED->value => 'text-warning',
+                                                App\Domain\Webhooks\Enums\EndpointHealthStatus::DOWN->value => 'text-danger',
+                                                App\Domain\Webhooks\Enums\EndpointHealthStatus::RECOVERED->value => 'text-success',
+                                                default => 'text-muted',
+                                            };
+                                        ?>
+                                        <input type="text" class="form-control bg-secondary {{ $colorLabel }}" value={{ $endpointHealth->health_status ?? '-' }} readonly aria-label="health status" aria-describedby="button-addon2">
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -260,16 +135,13 @@
 
             <div class="row">
                 <div class="col-12 col-md-12">
-                    <div class="row my-3">
+                    <div class="row my-4">
                         <div class="col-12 col-sm-4">
                             <div class="info-box">
                                 <div class="info-box-content">
-                                    <span class="info-box-text text-center text-muted">Event Type</span>
+                                    <span class="info-box-text text-center text-muted">Recent Success Count</span>
                                     <input
-                                        type="text"
-                                        class="form-control bg-secondary mt-2 font-monospace"
-                                        value="{{ $webhookDelivery->event->event_type ?? '-' }}"
-                                        readonly
+                                        type="text" class="form-control bg-secondary mt-2" value={{ $endpointHealth->recent_success_count ?? '-' }} readonly
                                     >
                                 </div>
                             </div>
@@ -277,23 +149,22 @@
                         <div class="col-12 col-sm-4">
                             <div class="info-box">
                                 <div class="info-box-content">
-                                    <span class="info-box-text text-center text-muted">Aggregate Type</span>
-                                    <input
-                                        type="text" class="form-control bg-secondary mt-2" value={{ $webhookDelivery->event->aggregate_type }} readonly
-                                    >
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-12 col-sm-4">
-                            <div class="info-box">
-                                <div class="info-box-content">
-                                    <span class="info-box-text text-center text-muted">Aggregate ID</span>
+                                    <span class="info-box-text text-center text-muted">Last Success At</span>
                                     <input
                                         type="text"
                                         class="form-control bg-secondary mt-2"
-                                        value="{{ $webhookDelivery->event->aggregate_id ?? '-' }}"
+                                        value="{{ Carbon\Carbon::parse($endpointHealth->last_success_at)->format('Y-m-d H:i:s') ?? '-' }}"
                                         readonly
                                     >
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 col-sm-4">
+                            <div class="info-box">
+                                <div class="info-box-content">
+                                    <span class="info-box-text text-center text-muted">Consecutive Failures</span>
+                                    <div class="input-group mt-2">
+                                        <input type="text" class="form-control bg-secondary" value={{ $endpointHealth->consecutive_failures ?? '-' }} readonly aria-label="Consec failure" aria-describedby="button-addon2">
                                 </div>
                             </div>
                         </div>
@@ -301,17 +172,64 @@
                 </div>
             </div>
 
+
             <div class="row">
                 <div class="col-12 col-md-12">
-                    <div class="row my-3">
+                    <div class="row my-4">
                         <div class="col-12 col-sm-4">
                             <div class="info-box">
                                 <div class="info-box-content">
-                                    <span class="info-box-text text-center text-muted">Endpoint Name</span>
+                                    <span class="info-box-text text-center text-muted">Last Failure At</span>
+                                    <input
+                                        type="text"
+                                        class="form-control bg-secondary mt-2"
+                                        value="{{ Carbon\Carbon::parse($endpointHealth->last_failure_at)->format('Y-m-d H:i:s') ?? '-' }}"
+                                        readonly
+                                    >
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 col-sm-4">
+                            <div class="info-box">
+                                <div class="info-box-content">
+                                    <span class="info-box-text text-center text-muted">Recovered At</span>
+                                    <input
+                                        type="text"
+                                        class="form-control bg-secondary mt-2"
+                                        value="{{ Carbon\Carbon::parse($endpointHealth->recovered_at)->format('Y-m-d H:i:s') ?? '-' }}"
+                                        readonly
+                                    >
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 col-sm-4">
+                            <div class="info-box">
+                                <div class="info-box-content">
+                                    <span class="info-box-text text-center text-muted">Last Alert At</span>
                                     <input
                                         type="text"
                                         class="form-control bg-secondary mt-2 font-monospace"
-                                        value="{{ $webhookDelivery->last_error_code ?? '-' }}"
+                                        value="{{ Carbon\Carbon::parse($endpointHealth->last_alert_at)->format('Y-m-d H:i:s') ?? '-' }}"
+                                        readonly
+                                    >
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-12 col-md-12">
+                    <div class="row my-3">
+                        <div class="col-12 col-sm-4">
+                            <div class="info-box">
+                                <div class="info-box-content">
+                                    <span class="info-box-text text-center text-muted">Degraded At</span>
+                                    <input
+                                        type="text"
+                                        class="form-control bg-secondary mt-2"
+                                        value="{{ Carbon\Carbon::parse($endpointHealth->degraded_at)->format('Y-m-d H:i:s') }}"
                                         readonly
                                     >
                                 </div>
@@ -320,9 +238,25 @@
                         <div class="col-12 col-sm-4">
                             <div class="info-box">
                                 <div class="info-box-content">
-                                    <span class="info-box-text text-center text-muted">Endpoint URL</span>
+                                    <span class="info-box-text text-center text-muted">Created At</span>
                                     <input
-                                        type="text" class="form-control bg-secondary mt-2" value={{ $webhookDelivery->status_label }} readonly
+                                        type="text"
+                                        class="form-control bg-secondary mt-2"
+                                        value="{{ Carbon\Carbon::parse($endpointHealth->health_created_at)->format('Y-m-d H:i:s') ?? '-' }}"
+                                        readonly
+                                    >
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 col-sm-4">
+                            <div class="info-box">
+                                <div class="info-box-content">
+                                    <span class="info-box-text text-center text-muted">Number of Retry Deliveries</span>
+                                    <input
+                                        type="text"
+                                        class="form-control bg-secondary mt-2"
+                                        value="-"
+                                        readonly
                                     >
                                 </div>
                             </div>
@@ -334,68 +268,75 @@
             <div class="row">
                 <div class="col-12 col-md-12">
                     <div class="row my-3">
-                        <div class="col-12 col-sm-12">
+                        <div class="col-12 col-sm-4">
                             <div class="info-box">
                                 <div class="info-box-content">
-                                    <span class="info-box-text text-center text-muted">Last Error Message</span>
-                                    <textarea
+                                    <span class="info-box-text text-center text-muted">Number of Permanently Failed Deliveries</span>
+                                    <input
+                                        type="text"
                                         class="form-control bg-secondary mt-2 font-monospace"
-                                        rows="2"
+                                        value="-"
                                         readonly
-                                    >{{  $webhookDelivery->last_error_message ?? '-' }}</textarea>
+                                    >
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-12 col-md-12">
-                    <div class="row my-3">
-                        <div class="col-12 col-sm-12">
-                            <div class="info-box">
-                                <div class="info-box-content">
-                                    <span class="info-box-text text-center text-muted">Payload</span>
-                                    <textarea
-                                        class="form-control bg-secondary mt-2 font-monospace"
-                                        rows="5"
-                                        readonly
-                                    >{{ $webhookDelivery->event->payload
-                                        ? json_encode($webhookDelivery->event->payload, true, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES)
-                                        : '-' }}</textarea>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="d-flex justify-content-end gap-2">
-                    @if($webhookDelivery->status === 'pending' || $webhookDelivery->status === 'queued')
-                        <button type="submit" class="btn btn-danger">
-                            <i class="fa-solid fa-circle-xmark me-1"></i> Cancel Sending Webhook
-                        </button>
-                    @endif
-                    @if($webhookDelivery->status === 'failed_permanently' || $webhookDelivery->status === 'cancelled')
-                        <button type="submit" class="btn btn-primary">
-                            <i class="fa-solid fa-refresh me-1"></i> Retry Webhook
-                        </button>
-                    @endif
                 </div>
             </div>
         </div>
     </div>
 
-    <div class="modal fade" id="webhookDeliveryShowModal" tabindex="-1" role="dialog" aria-labelledby="webhookDeliveryShowModalLabel" aria-hidden="true">
+    <div class="card overflow-hidden mt-5">
+        <div class="card-header d-flex align-items-center justify-content-between">
+            <h2 class="h6 m-0">Endpoint Snapshots List</h2>
+            <a class="btn btn-outline-secondary text-light endpointCollapsible"
+                data-bs-toggle="collapse"
+                href="#collapseEndpointSnapshots"
+                role="button"
+                aria-expanded="false"
+                aria-controls="collapseEndpointSnapshots"
+            >
+                Expand
+            </a>
+        </div>
+
+
+        <div class="collapse" id="collapseEndpointSnapshots">
+            <div class="card card-body">
+                <div class="table-responsive">
+                    <table id="endpoint-snapshots-table" class="table table-hover table-responsive w-100">
+                        <thead>
+                            <tr>
+                                <th>No.</th>
+                                <th>Tenant</th>
+                                <th>Legacy Webhook ID</th>
+                                <th>Name</th>
+                                <th>URL</th>
+                                <th>Status</th>
+                                <th>Timeout (seconds)</th>
+                                <th>Max Attempts</th>
+                                <th>Alert Config</th>
+                                <th>Created At</th>
+
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="alertConfigShowModal" tabindex="-1" role="dialog" aria-labelledby="alertConfigShowModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg modal-dialog-scrollable" role="document">
             <div class="modal-content">
                 <div class="modal-header bg-navy">
-                    <h5 class="modal-title" id="webhookDeliveryShowModalLabel"></h5>
+                    <h5 class="modal-title" id="alertConfigShowModalLabel"></h5>
                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <div></div>
+                    <pre class="mb-0"><code id="alertConfigContent" class="text-break"></code></pre>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -409,8 +350,129 @@
 @section('script')
 <script>
     document.addEventListener('DOMContentLoaded', function () {
-        // Select2 tag input for allowed IPs.
-        // Copy-to-clipboard buttons for the one-time credentials panel.
+
+        $('#endpoint-snapshots-table').DataTable({
+            processing: true,
+            serverSide: true,
+            stateSave: true,
+            paging: true,
+            lengthChange: true,
+            lengthMenu: [10, 25, 50, 100],
+            pageLength: 10,
+            searching: true,
+            ordering: true,
+            order: [
+                [1, 'desc']
+            ],
+            info: true,
+            dom: 'Bfrtip',
+            autoWidth: false,
+            ajax: {
+                url: "{{ route('admin.webhook-endpoint-snapshot.datatable') }}",
+                type: "GET",
+                data: function(d) {
+                    d.tenant = $('#tn_id').val();
+                    d.legacy_webhook_id = $('#legacy_webhk_id').val();
+                    d.date_type = $('#date_type').val();
+                    d.start_date = $('#start_date').val();
+                    d.end_date = $('#end_date').val();
+                },
+            },
+            layout: {
+                topStart: 'buttons',
+                topEnd: 'search',
+                bottomStart: ['pageLength', 'info'],
+                bottomEnd: 'paging',
+            },
+            buttons: [{
+                    extend: 'print',
+                    exportOptions: {
+                        columns: ':visible'
+                    }
+                },
+                {
+                    extend: 'excel',
+                    footer: true,
+                    exportOptions: {
+                        columns: ':visible'
+                    }
+                },
+                {
+                    extend: 'csv',
+                    footer: true,
+                    exportOptions: {
+                        columns: ':visible'
+                    }
+                },
+                'colvis',
+            ],
+            columnDefs: [{
+                orderable: true,
+                targets: [9]
+            }, ],
+            columns: [{
+                    data: 'DT_RowIndex',
+                    name: 'DT_RowIndex',
+                    orderable: false,
+                    searchable: false
+                },
+                {
+                    data: 'tenant_id',
+                    name: 'tenant_id',
+                    orderable: true,
+                    searchable: true
+                },
+                {
+                    data: 'legacy_webhook_id',
+                    name: 'legacy_webhook_id',
+                    orderable: true,
+                    searchable: true
+                },
+                {
+                    data: 'name',
+                    name: 'name',
+                    orderable: true,
+                    searchable: true
+                },
+                {
+                    data: 'url',
+                    name: 'url',
+                    orderable: true,
+                    searchable: true
+                },
+                {
+                    data: 'status',
+                    name: 'status',
+                    orderable: true,
+                    searchable: true
+                },
+                {
+                    data: 'timeout_seconds',
+                    name: 'timeout_seconds',
+                    orderable: true,
+                    searchable: false
+                },
+                {
+                    data: 'max_attempts',
+                    name: 'max_attempts',
+                    orderable: true,
+                    searchable: false
+                },
+                {
+                    data: 'alert_configuration',
+                    name: 'alert_configuration',
+                    orderable: false,
+                    searchable: false
+                },
+                {
+                    data: 'created_at',
+                    name: 'created_at',
+                    orderable: true,
+                    searchable: false
+                },
+            ],
+        });
+
         document.querySelectorAll('[data-copy-target]').forEach(function (btn) {
             btn.addEventListener('click', function () {
                 var input = document.querySelector(btn.getAttribute('data-copy-target'));
@@ -433,119 +495,35 @@
             });
         });
 
+        var endpointCollapsible = document.getElementById('collapseEndpointSnapshots');
+        var btn = document.querySelector('.endpointCollapsible');
+
+        endpointCollapsible.addEventListener('shown.bs.collapse', function () {
+            btn.textContent = 'Collapse';
+        });
+        endpointCollapsible.addEventListener('hidden.bs.collapse', function () {
+            btn.textContent = 'Expand';
+        });
+
         $(document).ready(function () {
 
-            function escapeHtml(value) {
-                return String(value ?? '').replace(/[&<>"']/g, function (c) {
-                    return { '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' }[c];
-                });
-            }
+            $('table#endpoint-snapshots-table').css('font-size', '14px');
 
-            function buildEventDetailHtml(evt) {
-                var rows = [
-                    ['Event ID', evt.id  ?? '-'],
-                    ['Tenant Code', evt.tenant_code ?? '-'],
-                    ['Source System', evt.source_system ?? '-'],
-                    ['Source ID', evt.source_instance_id ?? '-'],
-                    ['Event Type', evt.event_type ?? '-'],
-                    ['Merchant', evt.merchant_name ?? '-'],
-                    ['Aggregate Type', evt.aggregate_type ?? '-'],
-                    ['Aggregate ID', evt.aggregate_id ?? '-'],
-                    ['Status', evt.delivery.status_label ?? '-'],
-                    ['Last HTTP Status', evt.delivery.last_http_status ?? '-'],
-                    ['Next Attempt At', evt.delivery.next_attempt_at ?? '-'],
-                    ['Occurred At', evt.occurred_at ?? '-'],
-                    ['Created At', evt.created_at ?? '-'],
-                    ['API Version', evt.api_version ?? '-'],
-                    ['Payload', evt.payload ? JSON.stringify(evt.payload, null, 2) : '-']
-                ];
+            $(document).on('click', '.snapshot-config-btn', function () {
+                var raw = $(this).attr('data-snapshot-config');
+                var $target = $('#alertConfigContent');
 
-                return '<table class="table table-sm mb-0"><tbody>' +
-                    rows.map(function (r) {
-                        var value = r[0] === 'Payload'
-                            ? '<pre class="mb-0 font-monospace" style="white-space: pre-wrap;">' +
-                                escapeHtml(r[1]) +
-                            '</pre>'
-                            : escapeHtml(String(r[1]));
-
-                        return '<tr>' +
-                            '<th style="width:35%">' + escapeHtml(r[0]) + '</th>' +
-                            '<td>' + value + '</td>' +
-                            '</tr>';
-                    }).join('') +
-                    '</tbody></table>';
-            }
-
-            function buildSnapshotDetailHtml(snapshot) {
-                var rows = [
-                    ['Tenant', snapshot.tenant_id ?? '-'],
-                    ['Legacy Webhook ID', snapshot.legacy_webhook_id ?? '-'],
-                    ['Name', snapshot.name ?? '-'],
-                    ['URL', snapshot.url ?? '-'],
-                    ['Timeout (seconds)', snapshot.timeout_seconds ?? '-'],
-                    ['Max Attempts', snapshot.max_attempts ?? '-'],
-                    ['Status', snapshot.status ?? '-'],
-                    ['Created At', snapshot.created_at ?? '-'],
-                    ['Alert Config', snapshot.alert_configuration ? JSON.stringify(snapshot.alert_configuration, null, 2) : '-']
-                ];
-
-                return '<table class="table table-sm mb-0"><tbody>' +
-                    rows.map(function (r) {
-                        var value = r[0] === 'Alert Config'
-                            ? '<pre class="mb-0 font-monospace" style="white-space: pre-wrap;">' +
-                                escapeHtml(r[1]) +
-                            '</pre>'
-                            : escapeHtml(String(r[1]));
-
-                        return '<tr>' +
-                            '<th style="width:35%">' + escapeHtml(r[0]) + '</th>' +
-                            '<td>' + value + '</td>' +
-                            '</tr>';
-                    }).join('') +
-                    '</tbody></table>';
-            }
-
-            $(document).on('click', '.button-view-detail', function () {
-                var $button = $(this);
-                var id = $button.data('id');
-                var clickType = $button.data('click-type');
-                var $body = $('#webhookDeliveryShowModal .modal-body');
-
-                if(clickType === 'webhook-snapshot')
-                {
-                    var url = "{{ url('admin/webhook-endpoint-snapshot') }}/" + id
-                    $('#webhookDeliveryShowModalLabel')
-                        .text('Webhook Snapshot Detail');
-
-                } else {
-                    var url = "{{ url('admin/webhook-event') }}/" + id
-                    $('#webhookDeliveryShowModalLabel')
-                        .text('Webhook Event Detail');
+                if (!$target.length) {
+                    return;
                 }
 
-                $body.html('<div class="text-center py-4"><div class="spinner-border" role="status"></div></div>');
+                try {
+                    $target.text(JSON.stringify(JSON.parse(raw), null, 2));
+                } catch (err) {
+                    $target.text(raw || '');
+                }
+            });
 
-                $.ajax({
-                    url: url,
-                    type: 'GET',
-                    dataType: 'json',
-                    headers: {
-                        'Accept': 'application/json'
-                    },
-                    success: function (response) {
-
-                        if(clickType === 'webhook-snapshot')
-                        {
-                            $body.html(buildSnapshotDetailHtml(response.webhookEndpointSnapshot));
-                        } else {
-                            $body.html(buildEventDetailHtml(response.webhookEvent));
-                        }
-                    },
-                    error: function () {
-                        $body.html('<div class="alert alert-danger mb-0">Unable to load event details.</div>');
-                    }
-                });
-            })
         })
     });
 

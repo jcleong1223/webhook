@@ -35,11 +35,6 @@ class WebhookEndpointHealth extends Model
         'endpoint_url_hash'
     ];
 
-    CONST STATUS_HEALTHY = 'healthy';
-    CONST STATUS_DEGRADED = 'degraded';
-    CONST STATUS_DOWN = 'down';
-    CONST STATUS_DISABLED = 'disabled';
-
     public static $dateColumns = [
         'created_at' => [
             'label' => 'Created At',
