@@ -150,6 +150,7 @@
                     <input type="hidden" name="end_date" id="end_date" value="{{ old('end_date') }}">
                 </div> --}}
             </div>
+            <div class="alert alert-danger filter-err d-none" role="alert"></div>
             <div class="d-flex align-items-center justify-content-start gap-3 mb-2">
                 <button class="btn btn-sm btn-primary mb-4 delivery-filter-btn">
                     <i class="fa-solid fa-sliders me-1"></i> Filter
@@ -275,6 +276,19 @@
         $('table#webhook-delivery-table').css('font-size', '14px');
 
         $(document).on('click', '.delivery-filter-btn', function (e) {
+
+            var startDate = $('#start_date').val();
+            var endDate = $('#end_date').val();
+
+            $('.filter-err').addClass('d-none').html('');
+
+            if (startDate && endDate && endDate < startDate) {
+                $('.filter-err')
+                    .html('End date must be greater than or equal to start date')
+                    .removeClass('d-none');
+                return;
+            }
+
             $('#webhook-delivery-table').DataTable().ajax.reload();
             e.preventDefault();
         });

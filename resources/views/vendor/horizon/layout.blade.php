@@ -117,7 +117,7 @@
                     </li>
 
                     <li class="nav-item mt-4">
-                        <span class="nav-link px-0 text-uppercase small fw-semibold text-muted">Admin</span>
+                        <span class="nav-link px-0 text-uppercase small fw-semibold text-muted">Report</span>
                     </li>
                     <li class="nav-item">
                         <a href="{{ route('admin.api-client.index') }}" class="nav-link d-flex align-items-center">

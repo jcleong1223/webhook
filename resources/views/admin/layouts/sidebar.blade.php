@@ -66,7 +66,7 @@
     </li>
 
     <li class="nav-item mt-4">
-        <span class="nav-link px-0 text-uppercase small fw-semibold text-muted">Admin</span>
+        <span class="nav-link px-0 text-uppercase small fw-semibold text-muted">Report</span>
     </li>
     <li class="nav-item">
         <a href="{{ route('admin.api-client.index') }}" class="nav-link d-flex align-items-center {{ ($active ?? '') === 'api-clients' ? 'active' : '' }}">
@@ -98,6 +98,29 @@
             <span>Attempt History</span>
         </a>
     </li>
+
+    <li class="nav-item mt-4">
+        <span class="nav-link px-0 text-uppercase small fw-semibold text-muted">Admin</span>
+    </li>
+    <li class="nav-item">
+        <a href="{{ route('admin.user.index') }}" class="nav-link d-flex align-items-center {{ ($active ?? '') === 'user' ? 'active' : '' }}">
+            <i class="fa-solid fa-users me-2 fa-fw"></i>
+            <span>Users</span>
+        </a>
+    </li>
+    <li class="nav-item">
+        <a href="{{ route('admin.role-permission.index') }}" class="nav-link d-flex align-items-center {{ ($active ?? '') === 'role-permission' ? 'active' : '' }}">
+            <i class="fa-solid fa-ban me-2 fa-fw"></i>
+            <span>Roles & Permissions</span>
+        </a>
+    </li>
+    <li class="nav-item">
+        <a href="{{ route('admin.api-client.index') }}" class="nav-link d-flex align-items-center {{ ($active ?? '') === 'api-clients' ? 'active' : '' }}">
+            <i class="fa-solid fa-user me-2 fa-fw"></i>
+            <span>Profile</span>
+        </a>
+    </li>
+
     <li class="nav-item ms-3 mt-1">
         <form method="POST" action="{{ route('logout') }}" class="m-0 p-0">
             @csrf

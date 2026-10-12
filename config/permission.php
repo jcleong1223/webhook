@@ -216,4 +216,27 @@ return [
 
         'store' => 'default',
     ],
+
+    'modules' => [
+        'users' => [
+            'label' => 'Users',
+            'actions' => ['view', 'create', 'edit', 'delete'],
+        ],
+
+        'roles' => [
+            'label' => 'Roles',
+            'actions' => ['view', 'create', 'edit', 'delete'],
+        ],
+
+        'webhook-event' => [
+            'label' => 'Webhook Events',
+            'actions' => ['view', 'manage'],
+        ],
+
+        'webhook-delivery' => [
+            'label' => 'Webhook Deliveries',
+            'actions' => ['view', 'manage'],
+        ],
+    ],
+
 ];

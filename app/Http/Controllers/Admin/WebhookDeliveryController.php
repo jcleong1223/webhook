@@ -80,14 +80,21 @@ class WebhookDeliveryController extends Controller
                                     default            => 'webhook_deliveries.created_at',
                                 };
 
-                                if ($request->start_date && $request->end_date) {
-                                    $startDate = Carbon::parse($request->start_date)->startOfDay();
-                                    $endDate = Carbon::parse($request->end_date)->endOfDay();
-
-                                    return $query
-                                        ->where($dateColumn, '>=', $startDate)
-                                        ->where($dateColumn, '<=', $endDate);
-                                }
+                                return $query
+                                    ->when($request->start_date, function ($query) use ($request, $dateColumn) {
+                                        return $query->where(
+                                            $dateColumn,
+                                            '>=',
+                                            Carbon::parse($request->start_date)->startOfDay()
+                                        );
+                                    })
+                                    ->when($request->end_date, function ($query) use ($request, $dateColumn) {
+                                        return $query->where(
+                                            $dateColumn,
+                                            '<=',
+                                            Carbon::parse($request->end_date)->endOfDay()
+                                        );
+                                    });
                             });
 
         return DataTables::of($webhookDelivery)
@@ -157,7 +164,7 @@ class WebhookDeliveryController extends Controller
                     $webhookDelivery->id
                 );
             })
-            ->rawColumns(['action', 'last_http_status', 'last_error_code'])
+            ->rawColumns(['action', 'last_http_status', 'last_error_code', 'status'])
             ->orderColumn('event_type', 'webhook_events.event_type $1')
             ->make(true);
     }

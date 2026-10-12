@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Domain\Webhooks\Models\WebhookDeliveryAttempt;
 use App\Http\Controllers\Controller;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Yajra\DataTables\Facades\DataTables;
 
@@ -34,10 +35,21 @@ class WebhookDeliveryAttemptController extends Controller
         return view($this->folder . '.index', compact('tenants', 'responseStatuses'));
     }
 
-    public function deliveryAttemptDatatable(Request $attempt)
+    public function deliveryAttemptDatatable(Request $request)
     {
 
-        $deliveryAttempt = WebhookDeliveryAttempt::query();
+        $deliveryAttempt = WebhookDeliveryAttempt::query()
+                            ->when($request->status, function ($query) use ($request) {
+                                return $query->where('response_status', $request->status);
+                            })
+                            ->when($request->tenant, function ($query) use ($request) {
+                                return $query->where('tenant_id', $request->tenant);
+                            })->when($request->start_date, function ($query) use ($request) {
+                                return $query->where('attempted_at', '>=', Carbon::parse($request->start_date)->startOfDay());
+                            })
+                            ->when($request->end_date, function ($query) use ($request) {
+                                return $query->where('attempted_at', '<=', Carbon::parse($request->end_date)->endOfDay());
+                            });
 
         return DataTables::of($deliveryAttempt)
             ->addIndexColumn()

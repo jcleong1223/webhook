@@ -128,6 +128,7 @@
                 </div>
             </div>
         </div>
+        <div class="alert alert-danger filter-err d-none" role="alert"></div>
         <div class="d-flex align-items-center justify-content-start gap-3 mb-2">
             <button class="btn btn-sm btn-primary mb-4 edpt-health-filter-btn">
                 <i class="fa-solid fa-sliders me-1"></i> Filter
@@ -323,6 +324,19 @@
         $('table#endpoint-health-table').css('font-size', '14px');
 
         $(document).on('click', '.edpt-health-filter-btn', function(e) {
+
+            var startDate = $('#start_date').val();
+            var endDate = $('#end_date').val();
+
+            $('.filter-err').addClass('d-none').html('');
+
+            if (startDate && endDate && endDate < startDate) {
+                $('.filter-err')
+                    .html('End date must be greater than or equal to start date')
+                    .removeClass('d-none');
+                return;
+            }
+
             $('#endpoint-health-table').DataTable().ajax.reload();
             e.preventDefault();
         });
@@ -387,7 +401,6 @@
             applyDateRange(start, end);
         });
 
-        // Seed the visible input + hidden fields with the picker's default range (this month).
         applyDateRange(drpConfig.startDate, drpConfig.endDate);
     });
 </script>

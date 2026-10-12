@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\Admin\InternalApiClientController;
+use App\Http\Controllers\Admin\RolePermissionController;
+use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\WebhookDeliveryAttemptController;
 use App\Http\Controllers\Admin\WebhookDeliveryController;
 use App\Http\Controllers\Admin\WebhookEndpointHealthController;
@@ -70,6 +72,26 @@ Route::middleware(['auth', 'role:super-administrator|support-administrator|tenan
             Route::get('/', [WebhookDeliveryAttemptController::class, 'index'])->name('index');
             Route::get('datatable', [WebhookDeliveryAttemptController::class, 'deliveryAttemptDatatable'])->name('datatable');
             Route::get('/{id}', [WebhookDeliveryAttemptController::class, 'show'])->name('show');
+        });
+
+        Route::middleware('permission:api-clients.manage')->prefix('user')->as('user.')->group(function () {
+            Route::get('/', [UserController::class, 'index'])->name('index');
+            Route::get('/datatable', [UserController::class, 'usersDatatable'])->name('datatable');
+            Route::get('/create', [UserController::class, 'create'])->name('create');
+            Route::post('/', [UserController::class, 'store'])->name('store');
+            Route::get('/{id}', [UserController::class, 'edit'])->whereNumber('id')->name('edit');
+            Route::post('/{id}', [UserController::class, 'update'])->whereNumber('id')->name('update');
+        });
+
+        Route::middleware('permission:roles.manage')->prefix('role-permission')->as('role-permission.')->group(function () {
+            Route::get('/', [RolePermissionController::class, 'index'])->name('index');
+            Route::get('/permission-datatable', [RolePermissionController::class, 'permissionDatatable'])->name('permission-datatable');
+            Route::post('/store-permission', [RolePermissionController::class, 'storePermission'])->name('store-permission');
+            Route::post('/', [RolePermissionController::class, 'store'])->name('store');
+            Route::get('/{id}/edit', [RolePermissionController::class, 'edit'])
+                ->whereNumber('id')->name('edit');
+            Route::put('/{id}', [RolePermissionController::class, 'update'])
+                ->whereNumber('id')->name('update');
         });
 
 
