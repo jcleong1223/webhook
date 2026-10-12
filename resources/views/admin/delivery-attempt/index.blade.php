@@ -131,7 +131,7 @@
                 <button class="btn btn-sm btn-primary mb-4 event-filter-btn">
                 <i class="fa-solid fa-sliders me-1"></i> Filter
             </button>
-            <button class="btn btn-sm btn-danger mb-4 text-white clear-event-filter-btn">
+            <button class="btn btn-sm btn-danger mb-4 text-white clear-attempt-filter-btn">
                 <i class="fa-solid fa-close me-1"></i> Reset Filter
             </button>
             </div>
@@ -147,6 +147,7 @@
                         <th>Error Message</th>
                         <th>Response Body Excerpt</th>
                         <th>Attempted At</th>
+                        <th>Action</th>
                     </tr>
                 </thead>
                 <tbody></tbody>
@@ -155,15 +156,15 @@
         </div>
     </div>
 
-    <div class="modal fade" id="webhookEventPayloadModal" tabindex="-1" role="dialog" aria-labelledby="webhookEventPayloadModalLabel" aria-hidden="true">
+    <div class="modal fade" id="responseBodyExcerptModal" tabindex="-1" role="dialog" aria-labelledby="responseBodyExcerptModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg modal-dialog-scrollable" role="document">
             <div class="modal-content">
                 <div class="modal-header bg-navy">
-                    <h5 class="modal-title" id="webhookEventPayloadModalLabel">Webhook Event Payload</h5>
+                    <h5 class="modal-title" id="responseBodyExcerptModal">Response Body Excerpt</h5>
                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <pre class="mb-0"><code id="webhookEventPayloadContent" class="text-break"></code></pre>
+                    <pre class="mb-0"><code id="responseBodyExcerptContent" class="text-break"></code></pre>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -172,11 +173,11 @@
         </div>
     </div>
 
-    <div class="modal fade" id="webhookEventViewModal" tabindex="-1" role="dialog" aria-labelledby="webhookEventViewModalLabel" aria-hidden="true">
+    <div class="modal fade" id="attemptModal" tabindex="-1" role="dialog" aria-labelledby="attemptModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg modal-dialog-scrollable" role="document">
             <div class="modal-content">
                 <div class="modal-header bg-navy">
-                    <h5 class="modal-title" id="webhookEventViewModalLabel">Webhook Event Detail</h5>
+                    <h5 class="modal-title" id="attemptModalLabel">Delivery Attempt Detail</h5>
                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
@@ -212,10 +213,8 @@
                 url: "{{ route('admin.delivery-attempt.datatable') }}",
                 type: "GET",
                 data: function(d){
-                    console.log($('#tenant').val());
                     d.tenant = $('#tenant').val();
-                    d.merchant = $('#merchant').val();
-                    d.event_type = $('#event_type').val();
+                    d.status = $('#response_status').val();
                     d.start_date = $('#start_date').val();
                     d.end_date = $('#end_date').val();
 				},
@@ -260,10 +259,11 @@
                 { data: 'error_message', name: 'error_message', orderable: true, searchable: true },
                 { data: 'response_body_excerpt', name: 'response_body_excerpt', orderable: true, searchable: true },
                 { data: 'attempted_at', name: 'attempted_at', orderable: false, searchable: false },
+                { data: 'action', name: 'action', orderable: false, searchable: false }
             ],
         });
 
-        $('table#webhook-event-table').css('font-size', '14px');
+        $('table#delivery-attempt-table').css('font-size', '14px');
 
         function escapeHtml(value) {
             return String(value ?? '').replace(/[&<>"']/g, function (c) {
@@ -273,33 +273,36 @@
 
         function buildDetailHtml(evt) {
             var rows = [
-                ['Event ID', evt.id  ?? '-'],
-                ['Tenant Code', evt.tenant_code ?? '-'],
-                ['Source System', evt.source_system ?? '-'],
-                ['Source ID', evt.source_instance_id ?? '-'],
-                ['Event Type', evt.event_type ?? '-'],
-                ['Merchant', evt.merchant_name ?? '-'],
-                ['Aggregate Type', evt.aggregate_type ?? '-'],
-                ['Aggregate ID', evt.aggregate_id ?? '-'],
-                ['Status', evt.delivery.status_label ?? '-'],
-                ['Last HTTP Status', evt.delivery.last_http_status ?? '-'],
-                ['Next Attempt At', evt.delivery.next_attempt_at ?? '-'],
-                ['Occurred At', evt.occurred_at ?? '-'],
-                ['Created At', evt.created_at ?? '-'],
-                ['api_version', evt.api_version ?? '-'],
+                ['Attempted At', new Date(evt.attempted_at).toLocaleString() ?? '-'],
+                ['Tenant ID', evt.tenant_id ?? '-'],
+                ['Delivery ID', evt.delivery_id ?? '-'],
+                ['Duration (millisecond)', evt.duration_ms ?? '-'],
+                ['HTTP Status', evt.response_status ?? '-'],
+                ['Error Type', evt.error_type ?? '-'],
+                ['Error Message', evt.error_message ?? '-'],
+                ['Response Body Excerpt', evt.response_body_excerpt ?? '-'],
+                ['Response Status', evt.response_status ?? '-'],
             ];
 
             return '<table class="table table-sm mb-0"><tbody>' +
                 rows.map(function (r) {
-                    return '<tr><th style="width:35%">' + escapeHtml(r[0]) +
-                        '</th><td>' + escapeHtml(r[1]) + '</td></tr>';
+                    var value = r[0] === 'Response Body Excerpt'
+                        ? '<pre class="mb-0 font-monospace" style="white-space: pre-wrap;">' +
+                            escapeHtml(r[1]) +
+                        '</pre>'
+                        : escapeHtml(String(r[1]));
+
+                    return '<tr>' +
+                        '<th style="width:35%">' + escapeHtml(r[0]) + '</th>' +
+                        '<td>' + value + '</td>' +
+                        '</tr>';
                 }).join('') +
                 '</tbody></table>';
         }
 
-        $(document).on('click', '.webhook-event-payload-btn', function () {
-            var raw = $(this).attr('data-webhook_payload');
-            var $target = $('#webhookEventPayloadContent');
+        $(document).on('click', '.response-body-excerpt-btn', function () {
+            var raw = $(this).attr('data-response_body_excerpt');
+            var $target = $('#responseBodyExcerptContent');
 
             if (!$target.length) {
                 return;
@@ -312,7 +315,7 @@
             }
         });
 
-        $('#webhookEventViewModal').on('show.bs.modal', function (event) {
+        $('#attemptModal').on('show.bs.modal', function (event) {
             var button = $(event.relatedTarget)
             var id     = button.data('id');
             var $body  = $(this).find('.modal-body');
@@ -320,7 +323,7 @@
             $body.html('<div class="text-center py-4"><div class="spinner-border" role="status"></div></div>');
 
             $.ajax({
-                  url: "{{ url('admin/webhook-event') }}/" + id,
+                  url: "{{ url('admin/delivery-attempt') }}/" + id,
                 type: 'GET',
                 dataType: 'json',
                 headers: {
@@ -328,7 +331,7 @@
                 },
                 success: function (response) {
                     console.log(response)
-                    $body.html(buildDetailHtml(response.webhookEvent));
+                    $body.html(buildDetailHtml(response.attempt));
                 },
                 error: function () {
                     $body.html('<div class="alert alert-danger mb-0">Unable to load event details.</div>');
@@ -336,20 +339,19 @@
             });
         });
 
-        $(document).on('click', '.event-filter-btn', function (e) {
+        $(document).on('click', '.attempt-filter-btn', function (e) {
 
-            $('#webhook-event-table').DataTable().ajax.reload();
+            $('#delivery-attempt-table').DataTable().ajax.reload();
             e.preventDefault();
         });
 
-        $(document).on('click', '.clear-event-filter-btn', function (e) {
+        $(document).on('click', '.clear-attempt-filter-btn', function (e) {
             $('#tenant').val('');
-            $('#merchant').val('');
-            $('#event_type').val('');
+            $('#response_status').val('');
             $('#start_date').val('');
             $('#end_date').val('');
             $('#daterange-filter').val('');
-            $('#webhook-event-table').DataTable().ajax.reload();
+            $('#').DataTable().ajax.reload();
 
             e.preventDefault();
         });

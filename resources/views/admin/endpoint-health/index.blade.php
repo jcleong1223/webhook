@@ -330,6 +330,7 @@
         $(document).on('click', '.clear-endpoint-health-filter-btn', function(e) {
             $('#tenant').val('');
             $('#health_status').val('');
+            $('#date_type').val('');
             $('#start_date').val('');
             $('#end_date').val('');
             $('#daterange-filter').val('');

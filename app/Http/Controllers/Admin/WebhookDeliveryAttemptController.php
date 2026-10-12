@@ -45,7 +45,7 @@ class WebhookDeliveryAttemptController extends Controller
                 $responseBodyJson = e(json_encode($deliveryAttempt->response_body_excerpt));
 
                 return sprintf(
-                    '<a style="font-size: 14px; text-align: start;cursor: pointer; text-decoration: underline; color: #007bff;" class="btn webhook-event-payload-btn" data-webhook_payload="%s" data-id="%s" data-bs-toggle="modal" data-bs-target="#webhookEventPayloadModal">View Content</a>',
+                    '<a style="font-size: 14px; text-align: start;cursor: pointer; text-decoration: underline; color: #007bff;" class="btn response-body-excerpt-btn" data-response_body_excerpt="%s" data-id="%s" data-bs-toggle="modal" data-bs-target="#responseBodyExcerptModal">View Content</a>',
                     $responseBodyJson,
                     $deliveryAttempt->id
                 );
@@ -65,8 +65,23 @@ class WebhookDeliveryAttemptController extends Controller
 
                 return $attemptedAt;
             })
-            ->rawColumns(['response_body_excerpt'])
+            ->addColumn('action', function ($deliveryAttempt) {
+                return sprintf(
+                    '<a style="font-size: 12px; cursor: pointer" class="btn-sm btn-primary webhook-event-view-btn" data-id="%s" data-bs-toggle="modal" data-bs-target="#attemptModal"><i class="fa fa-eye" aria-hidden="true"></i></a>',
+                    $deliveryAttempt->id
+                );
+            })
+            ->rawColumns(['response_body_excerpt', 'action'])
             ->make(true);
+    }
+
+    public function show(int $id)
+    {
+        $attempt = WebhookDeliveryAttempt::findOrFail($id);
+
+        return response()->json([
+            'attempt' => $attempt
+        ]);
     }
 
 }

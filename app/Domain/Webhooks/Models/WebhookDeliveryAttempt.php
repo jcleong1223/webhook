@@ -29,6 +29,7 @@ class WebhookDeliveryAttempt extends Model
         'request_timestamp' => 'datetime',
         'request_headers_sanitized' => 'array',
         'response_headers_sanitized' => 'array',
+        'response_body_excerpt' => 'array',
         'attempted_at' => 'datetime',
     ];
 

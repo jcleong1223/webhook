@@ -35,6 +35,7 @@ class WebhookEndpointHealthController extends Controller
             ->orderBy('status')
             ->pluck('status');
 
+
         $datesColumns = WebhookEndpointHealth::$dateColumns;
 
         return view($this->folder . '.index', compact('tenants', 'statuses', 'datesColumns'));
@@ -42,7 +43,7 @@ class WebhookEndpointHealthController extends Controller
 
     public function endpointHealthDatatable(Request $request)
     {
-        $endpointHealth = $this->endpointHealthService->endpointHealthWithSnapshot();
+        $endpointHealth = $this->endpointHealthService->endpointHealthWithSnapshot($request->all());
 
         return DataTables::of($endpointHealth)
             ->addIndexColumn()
