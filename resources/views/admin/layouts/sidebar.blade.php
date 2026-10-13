@@ -115,7 +115,7 @@
         </a>
     </li>
     <li class="nav-item">
-        <a href="{{ route('admin.api-client.index') }}" class="nav-link d-flex align-items-center {{ ($active ?? '') === 'api-clients' ? 'active' : '' }}">
+        <a href="{{ route('admin.user.edit', Auth::user()->id) }}" class="nav-link d-flex align-items-center {{ ($active ?? '') === 'user' ? 'active' : '' }}">
             <i class="fa-solid fa-user me-2 fa-fw"></i>
             <span>Profile</span>
         </a>

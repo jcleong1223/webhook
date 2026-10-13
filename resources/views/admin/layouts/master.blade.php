@@ -55,6 +55,14 @@
                 });
             </script>
         @endif
+
+        @if (session()->has('error'))
+            <script>
+                document.addEventListener('DOMContentLoaded', () => {
+                    window.Swal.fire('Error!', @json(session('error')), 'error');
+                });
+            </script>
+        @endif
     </div>
 
     @yield('script')

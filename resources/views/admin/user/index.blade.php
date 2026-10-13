@@ -1,12 +1,12 @@
-@php($active = 'api-client')
+@php($active = 'user')
 @extends('admin.layouts.master')
 
-@section('title', 'API Clients')
+@section('title', 'Admin Users')
 
 @section('content')
     <div class="card overflow-hidden">
         <div class="card-header d-flex align-items-center justify-content-between">
-            <h2 class="h6 m-0">API Clients</h2>
+            <h2 class="h6 m-0">Admin Users</h2>
             <a href="{{ route('admin.user.create') }}" class="btn btn-primary">Create New User</a>
         </div>
 

@@ -87,11 +87,15 @@ Route::middleware(['auth', 'role:super-administrator|support-administrator|tenan
             Route::get('/', [RolePermissionController::class, 'index'])->name('index');
             Route::get('/permission-datatable', [RolePermissionController::class, 'permissionDatatable'])->name('permission-datatable');
             Route::post('/store-permission', [RolePermissionController::class, 'storePermission'])->name('store-permission');
-            Route::post('/', [RolePermissionController::class, 'store'])->name('store');
-            Route::get('/{id}/edit', [RolePermissionController::class, 'edit'])
-                ->whereNumber('id')->name('edit');
-            Route::put('/{id}', [RolePermissionController::class, 'update'])
-                ->whereNumber('id')->name('update');
+            Route::get('/create-role', [RolePermissionController::class, 'createRole'])->name('create-role');
+            Route::post('/store-role', [RolePermissionController::class, 'storeRole'])->name('store-role');
+            Route::get('/role/{id}', [RolePermissionController::class, 'showRole'])->name('show-role');
+            Route::get('/role/{id}/edit', [RolePermissionController::class, 'editRole'])
+                ->whereNumber('id')->name('edit-role');
+            Route::put('/role/{id}', [RolePermissionController::class, 'updateRole'])
+                ->whereNumber('id')->name('update-role');
+            Route::delete('/destroy-permission/{id}', [RolePermissionController::class, 'destroyPermission'])
+                ->whereNumber('id')->name('delete-permission');
         });
 
 
