@@ -218,24 +218,79 @@ return [
     ],
 
     'modules' => [
-        'users' => [
-            'label' => 'Users',
-            'actions' => ['view', 'create', 'edit', 'delete'],
+        'user' => [
+            'label' => 'User',
+            'actions' => ['view', 'view-any', 'create', 'update', 'update-any', 'delete'],
         ],
 
-        'roles' => [
-            'label' => 'Roles',
-            'actions' => ['view', 'create', 'edit', 'delete'],
+        'role' => [
+            'label' => 'Role',
+            'actions' => ['view', 'view-any', 'create', 'update', 'delete'],
+        ],
+
+        'permission' => [
+            'label' => 'Permission',
+            'actions' => ['view', 'create', 'delete'],
+        ],
+
+        'api-client' => [
+            'label' => 'API Client',
+            'actions' => ['view', 'create', 'update', 'delete'],
         ],
 
         'webhook-event' => [
-            'label' => 'Webhook Events',
-            'actions' => ['view', 'manage'],
+            'label' => 'Webhook Event',
+            'actions' => ['view'],
         ],
 
         'webhook-delivery' => [
-            'label' => 'Webhook Deliveries',
-            'actions' => ['view', 'manage'],
+            'label' => 'Webhook Delivery',
+            'actions' => ['view', 'view-any', 'redeliver', 'cancel'],
+        ],
+
+        'endpoint-health' => [
+            'label' => 'Endpoint Health',
+            'actions' => ['view', 'view-any'],
+        ],
+
+        'delivery-attempt' => [
+            'label' => 'Attempt History',
+            'actions' => ['view', 'view-any'],
+        ],
+
+        'monitoring' => [
+            'label' => 'Monitoring',
+            'actions' => ['view', 'view-any', 'manage'],
+        ],
+
+        'metric' => [
+            'label' => 'Metric',
+            'actions' => ['view', 'view-any'],
+        ],
+
+        'batch' => [
+            'label' => 'Batch',
+            'actions' => ['view', 'view-any'],
+        ],
+
+        'pending-job' => [
+            'label' => 'Pending Job',
+            'actions' => ['view', 'view-any'],
+        ],
+
+        'completed-job' => [
+            'label' => 'Completed Job',
+            'actions' => ['view', 'view-any'],
+        ],
+
+        'silenced-job' => [
+            'label' => 'Silenced Job',
+            'actions' => ['view', 'view-any'],
+        ],
+
+        'failed-job' => [
+            'label' => 'Failed Job',
+            'actions' => ['view', 'view-any'],
         ],
     ],
 

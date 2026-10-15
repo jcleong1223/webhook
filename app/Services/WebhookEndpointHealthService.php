@@ -32,10 +32,10 @@ class WebhookEndpointHealthService
             ->when($filters['tenant'] ?? null, function ($query, $tenantId) {
                 return $query->where('health.tenant_id', $tenantId);
             })
-            ->when($filters['health_status'], function ($query) use ($filters) {
+            ->when($filters['health_status'] ?? null, function ($query) use ($filters) {
                 return $query->where('health.status', $filters['health_status']);
             })
-            ->when($filters['date_type'], function ($query) use ($filters) {
+            ->when($filters['date_type'] ?? null, function ($query) use ($filters) {
 
                 $dateColumn = match ($filters['date_type']) {
                     'last_success_at'   => 'health.last_success_at',

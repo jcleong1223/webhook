@@ -3,10 +3,12 @@
 namespace App\Domain\Webhooks\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class InternalApiClient extends Model
 {
     //
+    use SoftDeletes;
 
     protected $fillable = [
         'client_id',

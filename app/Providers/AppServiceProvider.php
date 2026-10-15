@@ -6,6 +6,8 @@ use App\Domain\Webhooks\Contracts\WebhookSigner;
 use App\Domain\Webhooks\Contracts\WebhookTransport;
 use App\Domain\Webhooks\Services\HmacWebhookSigner;
 use App\Domain\Webhooks\Services\HttpWebhookTransport;
+use App\Models\User;
+use App\Policies\UserPolicy;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
 
@@ -29,8 +31,10 @@ class AppServiceProvider extends ServiceProvider
         //
         Gate::before(fn($user, $ability) => $user?->hasRole('super-administrator') ? true : null);
 
-        Gate::policy(WebhookEvent::class, WebhookEventPolicy::class);
-        Gate::policy(WebhookDelivery::class, WebhookDeliveryPolicy::class);
-        Gate::policy(WebhookEndpointHealth::class, WebhookEndpointHealthPolicy::class);
+        // Gate::policy(WebhookEvent::class, WebhookEventPolicy::class);
+        // Gate::policy(WebhookDelivery::class, WebhookDeliveryPolicy::class);
+        // Gate::policy(WebhookEndpointHealth::class, WebhookEndpointHealthPolicy::class);
+
+        Gate::policy(User::class, UserPolicy::class);
     }
 }

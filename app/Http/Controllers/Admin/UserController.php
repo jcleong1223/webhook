@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\CreateUserRequest;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Hash;
 use Spatie\Permission\Models\Role;
 use Yajra\DataTables\Facades\DataTables;
@@ -24,6 +25,8 @@ class UserController extends Controller
 
     public function index()
     {
+        // $this->authorize('viewAny', User::class);
+        // Gate::authorize('viewAny', \App\Models\User::class);
         return view($this->folder . 'index');
     }
 
@@ -39,6 +42,11 @@ class UserController extends Controller
                         $query->whereRaw('1 = 0');
                     }
                 });
+
+        if(!$request->user()->can('view-any', User::class))
+        {
+            $user->where('id', $request->user()->id);
+        }
 
         return DataTables::of($user)
             ->addIndexColumn()
@@ -63,10 +71,17 @@ class UserController extends Controller
                 return $createdAt;
             })
             ->addColumn('action', function ($user) {
-            return sprintf(
-                '<a href="' . route('admin.user.edit', $user->id) . '" style="font-size: 12px; cursor: pointer" class="btn-sm btn-primary" ><i class="fa fa-edit" aria-hidden="true"></i></a>',
-                $user->id
-            );
+
+                $buttons = '';
+
+                if (auth()->user()->can('update-any', $user)) {
+                    $buttons .= sprintf(
+                        '<a href="%s" style="font-size: 12px; cursor: pointer" class="btn-sm btn-primary"><i class="fa fa-edit" aria-hidden="true"></i></a>',
+                        route('admin.user.edit', $user->id)
+                    );
+                }
+
+                return empty($buttons) ? '-' : $buttons;
             })
             ->rawColumns(['status', 'action'])
             ->make(true);
@@ -83,6 +98,8 @@ class UserController extends Controller
 
     public function store(CreateUserRequest $request)
     {
+        $this->authorize('create', User::class);
+
         $validated = $request->validated();
 
         $user = User::create([
@@ -146,16 +163,10 @@ class UserController extends Controller
         $updatedData = [
             'name' => $validated['name'],
             'email' => $validated['email'],
-            'password' => $validated['password'],
             'status' => $validated['status'],
         ];
 
-        $user->update([
-            'name' => $validated['name'],
-            'email' => $validated['email'],
-            'password' => $validated['password'],
-            'status' => $validated['status'],
-        ]);
+        $user->update($updatedData);
 
         Session::flash('success', 'User updated successfully.');
         return redirect()->route('admin.user.index');

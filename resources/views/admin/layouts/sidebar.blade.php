@@ -68,12 +68,16 @@
     <li class="nav-item mt-4">
         <span class="nav-link px-0 text-uppercase small fw-semibold text-muted">Report</span>
     </li>
+
+    @can('api-client.view')
     <li class="nav-item">
-        <a href="{{ route('admin.api-client.index') }}" class="nav-link d-flex align-items-center {{ ($active ?? '') === 'api-clients' ? 'active' : '' }}">
+        <a href="{{ route('admin.api-client.index') }}" class="nav-link d-flex align-items-center {{ ($active ?? '') === 'api-client' ? 'active' : '' }}">
             <i class="fa-solid fa-id-card me-2 fa-fw"></i>
             <span>API Client</span>
         </a>
     </li>
+    @endcan
+
     <li class="nav-item">
         <a href="{{ route('admin.webhook-event.index') }}" class="nav-link d-flex align-items-center {{ ($active ?? '') === 'webhook-event' ? 'active' : '' }}">
             <i class="fa-solid fa-bolt me-2 fa-fw"></i>

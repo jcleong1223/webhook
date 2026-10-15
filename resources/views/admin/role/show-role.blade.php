@@ -11,9 +11,11 @@
                 <a href="{{ route('admin.role-permission.index') }}" class="text-light btn btn-sm btn-outline-secondary">
                     <i class="fa-solid fa-arrow-left me-1 "></i> Back
                 </a>
+                @can('role.update')
                 <a href="{{ route('admin.role-permission.edit-role', $role->id) }}" class="text-warning btn btn-sm btn-outline-warning">
                     <i class="fa-solid fa-edit me-1 "></i> Edit
                 </a>
+                @endcan
             </div>
         </div>
 

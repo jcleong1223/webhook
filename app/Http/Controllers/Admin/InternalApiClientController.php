@@ -40,7 +40,27 @@ class InternalApiClientController extends Controller
                 return $client->created_at ? $client->created_at->format('Y-m-d H:i:s') : '-';
             })
             ->addColumn('action', function ($client) {
-                return '<a class="btn btn-primary" href="' . route('admin.api-client.create', $client->id) . '"><i class="fa fa-search" aria-hidden="true"></i></a>';
+
+                $html = '<div class="gap-2 d-flex align-items-center">';
+
+                if(auth()->user()->can('api-client.update'))
+                {
+                    $html .= '<a class="btn btn-sm btn-info text-light" href="' . route('admin.api-client.edit', $client->id) . '"><i class="fa fa-edit" aria-hidden="true"></i></a>';
+                }
+
+                if(auth()->user()->can('api-client.delete'))
+                {
+                    $html .= '<a class="btn btn-sm btn-danger text-light delete-api-client" data-id="' . $client->id . '" href="' . route('admin.api-client.destroy', $client->id) . '"><i class="fa fa-trash" aria-hidden="true"></i></a>';
+                }
+
+                if(!auth()->user()->can('api-client.update') && !auth()->user()->can('api-client.delete'))
+                {
+                    $html .= '-';
+                }
+
+                $html .= '</div>';
+
+                return $html;
             })
             ->rawColumns(['action'])
             ->make(true);
@@ -59,7 +79,6 @@ class InternalApiClientController extends Controller
                 fn($ip) => !empty($ip)
             ));
 
-            // Overwrite request input with the parsed array
             $request->merge(['allowed_ips' => $ips]);
         }
 
@@ -90,5 +109,51 @@ class InternalApiClientController extends Controller
             ->with('success', 'API client created successfully.')
             ->with('new_client_id', $clientId)
             ->with('new_client_secret', $plainSecret);
+    }
+
+    public function edit(int $id)
+    {
+        $client = InternalApiClient::findOrFail($id);
+        return view('admin.internal-api-client.edit', compact('client'));
+    }
+
+    public function update(Request $request, int $id)
+    {
+        $client = InternalApiClient::findOrFail($id);
+
+        if ($request->has('allowed_ips') && is_string($request->input('allowed_ips'))) {
+            $ips = array_values(array_filter(
+                array_map('trim', preg_split('/\r\n|\r|\n/', $request->input('allowed_ips'))),
+                fn($ip) => !empty($ip)
+            ));
+
+            $request->merge(['allowed_ips' => $ips]);
+        }
+
+        $data = $request->validate([
+            'name'          => 'required|string|max:255',
+            'allowed_ips'   => 'nullable|array',
+            'allowed_ips.*' => 'ip',
+            'status'        => 'required|in:active,inactive',
+        ], [
+            'allowed_ips.*.ip' => 'One or more of the entered IP addresses are invalid.',
+        ]);
+
+        $client->update($data);
+
+        return redirect()
+            ->route('admin.api-client.index')
+            ->with('success', 'API client updated successfully.');
+    }
+
+    public function destroy(int $id)
+    {
+        $client = InternalApiClient::findOrFail($id);
+        $client->delete();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'API client deleted successfully.',
+        ]);
     }
 }

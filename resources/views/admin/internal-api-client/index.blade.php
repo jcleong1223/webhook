@@ -7,7 +7,9 @@
     <div class="card overflow-hidden">
         <div class="card-header d-flex align-items-center justify-content-between">
             <h2 class="h6 m-0">API Clients</h2>
-            <a href="{{ route('admin.api-client.create') }}" class="btn btn-primary">Create API Client</a>
+            @can('api-client.create')
+                <a href="{{ route('admin.api-client.create') }}" class="btn btn-sm btn-primary">Create API Client</a>
+            @endcan
         </div>
 
         <div class="card-body card-bg-secondary ">
@@ -72,6 +74,48 @@
                 { data: 'action', name: 'action', orderable: false, searchable: false },
             ],
         });
+
+        $(document).on('click', '.delete-api-client', function (e) {
+            e.preventDefault();
+            var id = $(this).data('id');
+
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "You won't be able to revert this!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, delete it!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        url: "{{ route('admin.api-client.destroy', ':id') }}".replace(':id', id),
+                        method: 'DELETE',
+                        dataType: 'json',
+                        data: {
+                            _token: '{{ csrf_token() }}'
+                        },
+                        success: function (response) {
+                            Swal.fire(
+                                'Deleted!',
+                                response.message || 'API client has been deleted.',
+                                'success'
+                            );
+                            $('#api-client-table').DataTable().ajax.reload();
+                        },
+                        error: function () {
+                            Swal.fire(
+                                'Error!',
+                                'Unable to delete the api client.',
+                                'error'
+                            );
+                        }
+                    });
+                }
+            });
+        })
+
     });
 </script>
 @endsection

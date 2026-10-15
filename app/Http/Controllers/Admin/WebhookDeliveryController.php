@@ -174,4 +174,11 @@ class WebhookDeliveryController extends Controller
         $webhookDelivery = WebhookDelivery::query()->find($id);
         return view($this->folder . '.show', compact('webhookDelivery'));
     }
+
+    public function retryWebhookDelivery(string $id)
+    {
+        $webhookDelivery = WebhookDelivery::findOrFail($id);
+        $webhookDelivery->retry();
+        return redirect()->back()->with('message', 'Webhook delivery retried successfully');
+    }
 }

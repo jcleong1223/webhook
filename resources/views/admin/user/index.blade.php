@@ -7,7 +7,7 @@
     <div class="card overflow-hidden">
         <div class="card-header d-flex align-items-center justify-content-between">
             <h2 class="h6 m-0">Admin Users</h2>
-            <a href="{{ route('admin.user.create') }}" class="btn btn-primary">Create New User</a>
+            @can('create', App\Models\User::class)<a href="{{ route('admin.user.create') }}" class="btn btn-primary">Create New User</a>@endcan
         </div>
 
         <div class="card-body card-bg-secondary ">
@@ -66,7 +66,7 @@
                 { data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, searchable: false },
                 { data: 'name', name: 'name', orderable: true, searchable: true },
                 { data: 'email', name: 'email', orderable: true, searchable: true},
-                { data: 'role', name: 'role', orderable: true, searchable: true },
+                { data: 'role', name: 'role', orderable: true, searchable: false },
                 { data: 'status', name: 'status', orderable: true, searchable: true },
                 { data: 'created_at', name: 'created_at', orderable: true, searchable: true },
                 { data: 'action', name: 'action', orderable: false, searchable: false },

@@ -114,10 +114,20 @@ class WebhookEventController extends Controller
                 return $nextAttemptAt ? $nextAttemptAt : '-';
             })
             ->addColumn('action', function ($webhookEvent) {
-                return sprintf(
-                '<a style="font-size: 12px; cursor: pointer" class="btn-sm btn-primary webhook-event-view-btn" data-id="%s" data-bs-toggle="modal" data-bs-target="#webhookEventViewModal"><i class="fa fa-eye" aria-hidden="true"></i></a>',
-                    $webhookEvent->id
-                );
+
+                $html = '';
+
+                if(auth()->user()->can('webhook-event.view'))
+                {
+                    $html .= sprintf(
+                        '<a style="font-size: 12px; cursor: pointer" class="btn-sm btn-primary webhook-event-view-btn" data-id="%s" data-bs-toggle="modal" data-bs-target="#webhookEventViewModal"><i class="fa fa-eye" aria-hidden="true"></i></a>',
+                        $webhookEvent->id
+                    );
+                } else {
+                    $html .= '-';
+                }
+
+                return $html;
 
             })
             ->rawColumns(['action', 'payload', 'status', 'last_http_status'])

@@ -371,20 +371,27 @@
                 </div>
             </div>
 
+
             <div class="row">
                 <div class="d-flex justify-content-end gap-2">
+                    @can('webhook-delivery.cancel')
                     @if($webhookDelivery->status === 'pending' || $webhookDelivery->status === 'queued')
                         <button type="submit" class="btn btn-danger">
                             <i class="fa-solid fa-circle-xmark me-1"></i> Cancel Sending Webhook
                         </button>
                     @endif
+                    @endcan
+
+                    @can('webhook-delivery.redeliver')
                     @if($webhookDelivery->status === 'failed_permanently' || $webhookDelivery->status === 'cancelled')
                         <button type="submit" class="btn btn-primary">
                             <i class="fa-solid fa-refresh me-1"></i> Retry Webhook
                         </button>
                     @endif
+                    @endcan
                 </div>
             </div>
+
         </div>
     </div>
 

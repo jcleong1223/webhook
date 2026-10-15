@@ -11,6 +11,8 @@
 
         <div class="card-body card-bg-secondary">
             <ul class="nav nav-tabs" id="role_perm_nav" role="tablist">
+
+                @can('permission.view')
                 <li class="nav-item" role="presentation">
                     <button
                         class="nav-link {{ Request()->get('tab') != 'role' ? 'active text-light' : '' }}"
@@ -25,26 +27,47 @@
                         Permissions
                     </button>
                 </li>
+                @endcan
 
+                @can('role.view')
+                    <li class="nav-item" role="presentation">
+                        <button
+                            class="nav-link {{ Request()->get('tab') == 'role' ? 'active ' : 'text-light' }}"
+                            id="role-tab"
+                            data-bs-toggle="tab"
+                            data-bs-target="#role"
+                            type="button"
+                            role="tab"
+                            aria-controls="role"
+                            aria-selected="{{ Request()->get('tab') == 'role' ? 'true' : 'false' }}"
+                        >
+                            Roles
+                        </button>
+                    </li>
+                @endcan
+
+                @if(!auth()->user()->can('role.view') && !auth()->user()->can('permission.view'))
                 <li class="nav-item" role="presentation">
-                    <button
-                        class="nav-link {{ Request()->get('tab') == 'role' ? 'active ' : 'text-light' }}"
-                        id="role-tab"
-                        data-bs-toggle="tab"
-                        data-bs-target="#role"
-                        type="button"
-                        role="tab"
-                        aria-controls="role"
-                        aria-selected="{{ Request()->get('tab') == 'role' ? 'true' : 'false' }}"
-                    >
-                        Roles
-                    </button>
-                </li>
+                        <button
+                            class="nav-link active"
+                            id="empty-tab"
+                            data-bs-toggle="tab"
+                            data-bs-target="#empty"
+                            type="button"
+                            role="tab"
+                            aria-controls="empty"
+                            aria-selected="{{ Request()->get('tab') == 'role' ? 'true' : 'false' }}"
+                        >
+                            Information
+                        </button>
+                    </li>
+                @endif
             </ul>
 
             <div class="tab-content pt-3" id="role_perm_content">
 
-            {{-- Permissions Tab --}}
+                {{-- Permissions Tab --}}
+                @can('permission.view')
                 <div
                     class="tab-pane fade {{ Request()->get('tab') != 'role' ? 'show active' : '' }}"
                     id="permission"
@@ -53,8 +76,10 @@
                 >
                     <div class="row g-3">
 
+
                         {{-- Create Permission --}}
                         <div class="col-md-4">
+                            @can('permission.create')
                             <div class="info-box d-block p-3 h-100">
                                 <h6 class="mb-3">
                                     <i class="fa-solid fa-shield-halved me-1"></i>
@@ -142,7 +167,9 @@
                                     </div>
                                 </form>
                             </div>
+                            @endcan
                         </div>
+
 
                         {{-- Permission List --}}
                         <div class="col-md-8">
@@ -177,8 +204,10 @@
 
                     </div>
                 </div>
+                @endcan
 
                 {{-- Roles Tab --}}
+                @can('role.view')
                 <div
                     class="tab-pane fade {{ Request()->get('tab') == 'role' ? 'show active' : '' }}"
                     id="role"
@@ -192,9 +221,11 @@
                                 Link permission keys to roles to grant the corresponding permissions for accessing specific modules and actions.
                             </p>
                         </div>
+                        @can('role.create')
                         <div class="d-block">
                             <a href="{{ route('admin.role-permission.create-role') }}" class="btn btn-sm btn-primary">Create New Role</a>
                         </div>
+                        @endcan
                     </div>
 
                     <div class="card overflow-hidden">
@@ -221,7 +252,10 @@
                                                 <td>{{ $role->created_at->format('F j, Y') }}</td>
                                                 <td>
                                                     <a href="{{ route('admin.role-permission.show-role', $role->id) }}" class="btn btn-sm btn-info"><i class="fa-solid fa-eye text-white"></i></a>
-                                                    <a href="{{ route('admin.role-permission.edit-role', $role->id) }}" class="btn btn-sm btn-primary"><i class="fa-solid fa-edit"></i></a>
+
+                                                    @can('role.update')
+                                                        <a href="{{ route('admin.role-permission.edit-role', $role->id) }}" class="btn btn-sm btn-primary"><i class="fa-solid fa-edit"></i></a>
+                                                    @endcan
                                                 </td>
                                             </tr>
                                         @endforeach
@@ -231,6 +265,23 @@
                         </div>
                     </div>
                 </div>
+                @endcan
+
+                {{-- Empty tab --}}
+                @if(!auth()->user()->can('role.view') && !auth()->user()->can('permission.view'))
+                <div
+                    class="tab-pane fade show active"
+                    id="empty"
+                    role="tabpanel"
+                    aria-labelledby="empty-tab"
+                >
+                    <div class="card overflow-hidden">
+                        <div class="card-body card-bg-secondary ">
+                            <div><h5>Currently, there are no roles or permissions.</h5></div>
+                        </div>
+                    </div>
+                </div>
+                @endcan
             </div>
         </div>
 

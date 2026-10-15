@@ -159,6 +159,29 @@
                             <span>Attempt History</span>
                         </a>
                     </li>
+
+                    <li class="nav-item mt-4">
+                        <span class="nav-link px-0 text-uppercase small fw-semibold text-muted">Admin</span>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{{ route('admin.user.index') }}" class="nav-link d-flex align-items-center">
+                            <i class="fa-solid fa-users me-2 fa-fw"></i>
+                            <span>Users</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{{ route('admin.role-permission.index') }}" class="nav-link d-flex align-items-center">
+                            <i class="fa-solid fa-ban me-2 fa-fw"></i>
+                            <span>Roles & Permissions</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{{ route('admin.user.edit', Auth::user()->id) }}" class="nav-link d-flex align-items-center">
+                            <i class="fa-solid fa-user me-2 fa-fw"></i>
+                            <span>Profile</span>
+                        </a>
+                    </li>
+
                     <li class="nav-item ms-3 mt-1">
                         <form method="POST" action="{{ route('logout') }}" class="m-0 p-0">
                             @csrf

@@ -29,6 +29,13 @@ class RolePermissionController extends Controller
 
         $roles = Role::all();
 
+        if(!auth()->user()->can('role.view-any'))
+        {
+            $roles = $roles->filter(function ($role) {
+                return $role->users->contains(auth()->user());
+            });
+        }
+
         return view($this->folder . 'index', compact('modules', 'permissionCount', 'roles'));
     }
 
@@ -39,7 +46,7 @@ class RolePermissionController extends Controller
                         $query->whereHas('roles', function ($roleQuery) use ($request) {
                             $roleQuery->where('id', $request->role_id);
                         });
-                    });
+                    })->orderBy('name', 'asc');
 
         return DataTables::of($permission)
             ->addIndexColumn()
@@ -50,10 +57,17 @@ class RolePermissionController extends Controller
                 return $createdAt;
             })
             ->addColumn('action', function ($permission) {
-                return sprintf(
-                    '<a style="font-size: 12px; cursor: pointer; justify-self: center;" class="btn-sm btn-outline-danger btn-del-perm" data-id="%s"><i class="fa fa-trash" aria-hidden="true"></i></a>',
-                    $permission->id
-                );
+
+                $button = '';
+
+                if (auth()->user()->can('permission.delete')) {
+                    $button .= sprintf(
+                        '<a style="font-size: 12px; cursor: pointer; justify-self: center;" class="btn-sm btn-outline-danger btn-del-perm" data-id="%s"><i class="fa fa-trash" aria-hidden="true"></i></a>',
+                        $permission->id
+                    );
+                }
+
+                return empty($button) ? '-' : $button;
             })
             ->rawColumns(['action'])
             ->make(true);
