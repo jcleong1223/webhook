@@ -59,6 +59,8 @@
                             <span>Dashboard</span>
                         </router-link>
                     </li>
+
+                    @canany(['monitoring.view', 'monitoring.view-any'])
                     <li class="nav-item">
                         <router-link active-class="active" to="/monitoring" class="nav-link d-flex align-items-center">
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
@@ -67,6 +69,9 @@
                             <span>Monitoring</span>
                         </router-link>
                     </li>
+                    @endcanany
+
+                    @canany(['metric.view', 'metric.view-any'])
                     <li class="nav-item">
                         <router-link active-class="active" to="/metrics" class="nav-link d-flex align-items-center">
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
@@ -75,6 +80,9 @@
                             <span>Metrics</span>
                         </router-link>
                     </li>
+                    @endcanany
+
+                    @canany(['batch.view', 'batch.view-any'])
                     <li class="nav-item">
                         <router-link active-class="active" to="/batches" class="nav-link d-flex align-items-center">
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
@@ -83,6 +91,9 @@
                             <span>Batches</span>
                         </router-link>
                     </li>
+                    @endcanany
+
+                    @canany(['pending-job.view', 'pending-job.view-any'])
                     <li class="nav-item">
                         <router-link active-class="active" to="/jobs/pending" class="nav-link d-flex align-items-center">
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
@@ -91,6 +102,9 @@
                             <span>Pending Jobs</span>
                         </router-link>
                     </li>
+                    @endcanany
+
+                    @canany(['completed-job.view', 'completed-job.view-any'])
                     <li class="nav-item">
                         <router-link active-class="active" to="/jobs/completed" class="nav-link d-flex align-items-center">
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
@@ -99,6 +113,9 @@
                             <span>Completed Jobs</span>
                         </router-link>
                     </li>
+                    @endcanany
+
+                    @canany(['silenced-job.view', 'silenced-job.view-any'])
                     <li class="nav-item">
                         <router-link active-class="active" to="/jobs/silenced" class="nav-link d-flex align-items-center">
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
@@ -107,6 +124,9 @@
                             <span>Silenced Jobs</span>
                         </router-link>
                     </li>
+                    @endcanany
+
+                    @canany(['failed-job.view', 'failed-job.view-any'])
                     <li class="nav-item">
                         <router-link active-class="active" to="/failed" class="nav-link d-flex align-items-center">
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
@@ -115,10 +135,13 @@
                             <span>Failed Jobs</span>
                         </router-link>
                     </li>
+                    @endcanany
+
 
                     <li class="nav-item mt-4">
                         <span class="nav-link px-0 text-uppercase small fw-semibold text-muted">Report</span>
                     </li>
+                    @canany(['api-client.view', 'api-client.view-any'])
                     <li class="nav-item">
                         <a href="{{ route('admin.api-client.index') }}" class="nav-link d-flex align-items-center">
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
@@ -127,6 +150,9 @@
                             <span>API Client</span>
                         </a>
                     </li>
+                    @endcanany
+
+                    @canany(['webhook-event.view', 'webhook-event.view-any'])
                     <li class="nav-item">
                         <a href="{{ route('admin.webhook-event.index') }}" class="nav-link d-flex align-items-center">
                             <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 20 20" fill="currentColor" class="me-10">
@@ -135,6 +161,9 @@
                             <span>Webhook Event</span>
                         </a>
                     </li>
+                    @endcanany
+
+                    @canany(['webhook-delivery.view', 'webhook-delivery.view-any'])
                     <li class="nav-item">
                         <a href="{{ route('admin.webhook-delivery.index') }}" class="nav-link d-flex align-items-center">
                             <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 512 512" fill="currentColor" class="me-10 flex-shrink-0" aria-hidden="true">
@@ -143,41 +172,74 @@
                             <span>Webhook Delivery</span>
                         </a>
                     </li>
+                    @endcanany
+
+                    @canany(['endpoint-health.view', 'endpoint-health.view-any'])
                     <li class="nav-item">
-                        <a href="{{ route('admin.webhook-delivery.index') }}" class="nav-link d-flex align-items-center">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 512 512" fill="currentColor" class="me-10 flex-shrink-0" aria-hidden="true">
-                                <path d="M64 0C46.3 0 32 14.3 32 32V96c0 70.7 57.3 128 128 128h32c70.7 0 128-57.3 128-128V32c0-17.7-14.3-32-32-32s-32 14.3-32 32V96c0 35.3-28.7 64-64 64H160c-35.3 0-64-28.7-64-64V32c0-17.7-14.3-32-32-32zM224 256c-88.4 0-160-71.6-160-160V80H0V96c0 123.7 100.3 224 224 224h16v128c0 17.7 14.3 32 32 32h32c53 0 96-43 96-96s-43-96-96-96h-16V256H224zm192 128a32 32 0 1 1 64 0 32 32 0 1 1 -64 0z"/>
+                        <a href="{{ route('admin.endpoint-health.index') }}" class="nav-link d-flex align-items-center">
+                            <svg xmlns="http://www.w3.org/2000/svg"
+                                viewBox="0 0 576 512"
+                                width="1em"
+                                height="1em"
+                                fill="currentColor"
+                                class="me-10 fa-fw"
+                                aria-hidden="true"
+                            >
+                                <path d="M142.4 21.9c5.6 16.8-3.5 34.9-20.2 40.5L96 71.1 96 192c0 53 43 96 96 96s96-43 96-96l0-120.9-26.1-8.7c-16.8-5.6-25.8-23.7-20.2-40.5s23.7-25.8 40.5-20.2l26.1 8.7C334.4 19.1 352 43.5 352 71.1L352 192c0 77.2-54.6 141.6-127.3 156.7C231 404.6 278.4 448 336 448c61.9 0 112-50.1 112-112l0-70.7c-28.3-12.3-48-40.5-48-73.3c0-44.2 35.8-80 80-80s80 35.8 80 80c0 32.8-19.7 61-48 73.3l0 70.7c0 97.2-78.8 176-176 176c-92.9 0-168.9-71.9-175.5-163.1C87.2 334.2 32 269.6 32 192L32 71.1c0-27.5 17.6-52 43.8-60.7l26.1-8.7c16.8-5.6 34.9 3.5 40.5 20.2zM480 224a32 32 0 1 0 0-64 32 32 0 1 0 0 64z"/>
                             </svg>
                             <span>Endpoint Health</span>
                         </a>
                     </li>
+                    @endcanany
+
+                    @canany(['delivery-attempt.view', 'delivery-attempt.view-any'])
                     <li class="nav-item">
-                        <a href="{{ route('admin.endpoint-health.index') }}" class="nav-link d-flex align-items-center">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 512 512" fill="currentColor" class="me-10 flex-shrink-0" aria-hidden="true">
-                                <path d="M64 0C46.3 0 32 14.3 32 32V96c0 70.7 57.3 128 128 128h32c70.7 0 128-57.3 128-128V32c0-17.7-14.3-32-32-32s-32 14.3-32 32V96c0 35.3-28.7 64-64 64H160c-35.3 0-64-28.7-64-64V32c0-17.7-14.3-32-32-32zM224 256c-88.4 0-160-71.6-160-160V80H0V96c0 123.7 100.3 224 224 224h16v128c0 17.7 14.3 32 32 32h32c53 0 96-43 96-96s-43-96-96-96h-16V256H224zm192 128a32 32 0 1 1 64 0 32 32 0 1 1 -64 0z"/>
+                        <a href="{{ route('admin.delivery-attempt.index') }}" class="nav-link d-flex align-items-center">
+                            <svg xmlns="http://www.w3.org/2000/svg"
+                                width="1em"
+                                height="1em"
+                                viewBox="0 0 512 512"
+                                fill="currentColor"
+                                class="me-10 fa-fw"
+                                aria-hidden="true"
+                            >
+                                <path d="M256 8C119 8 8 119 8 256s111 248 248 248 248-111 248-248S393 8 256 8zm0 448c-110.5 0-200-89.5-200-200S145.5 56 256 56s200 89.5 200 200-89.5 200-200 200zm24-328c0-13.3-10.7-24-24-24s-24 10.7-24 24v128c0 8 4 15.5 10.7 20l80 56c10.8 7.5 25.7 4.8 33.3-6s4.8-25.7-6-33.3L280 270.4V128z"/>
                             </svg>
                             <span>Attempt History</span>
                         </a>
                     </li>
+                    @endcanany
+
 
                     <li class="nav-item mt-4">
                         <span class="nav-link px-0 text-uppercase small fw-semibold text-muted">Admin</span>
                     </li>
+
                     <li class="nav-item">
                         <a href="{{ route('admin.user.index') }}" class="nav-link d-flex align-items-center">
-                            <i class="fa-solid fa-users me-2 fa-fw"></i>
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512" width="1em" height="1em" fill="currentColor" class="me-10 fa-fw" aria-hidden="true">
+                                <path d="M96 128a80 80 0 1 0 0-160 80 80 0 1 0 0 160zm0 32C43 160 0 203 0 256v48c0 17.7 14.3 32 32 32h128c17.7 0 32-14.3 32-32v-48c0-53-43-96-96-96zm448-32a80 80 0 1 0 0-160 80 80 0 1 0 0 160zm-32 32c-53 0-96 43-96 96v48c0 17.7 14.3 32 32 32h128c17.7 0 32-14.3 32-32v-48c0-53-43-96-96-96zM320 256a96 96 0 1 0 0-192 96 96 0 1 0 0 192zm0 32c-70.7 0-128 57.3-128 128v32c0 17.7 14.3 32 32 32h192c17.7 0 32-14.3 32-32v-32c0-70.7-57.3-128-128-128z"/>
+                            </svg>
                             <span>Users</span>
                         </a>
                     </li>
+
+                    @canany(['role.view', 'role.view-any'])
                     <li class="nav-item">
                         <a href="{{ route('admin.role-permission.index') }}" class="nav-link d-flex align-items-center">
-                            <i class="fa-solid fa-ban me-2 fa-fw"></i>
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="1em" height="1em" fill="currentColor" class="me-10 fa-fw" aria-hidden="true">
+                                <path d="M256 8C119 8 8 119 8 256s111 248 248 248 248-111 248-248S393 8 256 8zm0 48c44.5 0 85.3 14.6 118.4 39.3L95.3 374.4C70.6 341.3 56 300.5 56 256 56 145.5 145.5 56 256 56zm0 400c-44.5 0-85.3-14.6-118.4-39.3L416.7 137.6C441.4 170.7 456 211.5 456 256c0 110.5-89.5 200-200 200z"/>
+                            </svg>
                             <span>Roles & Permissions</span>
                         </a>
                     </li>
+                    @endcanany
+
                     <li class="nav-item">
                         <a href="{{ route('admin.user.edit', Auth::user()->id) }}" class="nav-link d-flex align-items-center">
-                            <i class="fa-solid fa-user me-2 fa-fw"></i>
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" width="1em" height="1em" fill="currentColor" class="me-10 fa-fw" aria-hidden="true">
+                                <path d="M224 256A128 128 0 1 0 224 0a128 128 0 1 0 0 256zm-45.7 48C79.8 304 0 383.8 0 482.3 0 498.7 13.3 512 29.7 512h388.6c16.4 0 29.7-13.3 29.7-29.7C448 383.8 368.2 304 269.7 304h-91.4z"/>
+                            </svg>
                             <span>Profile</span>
                         </a>
                     </li>

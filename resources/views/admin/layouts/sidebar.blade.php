@@ -8,6 +8,8 @@
             <span>Dashboard</span>
         </a>
     </li>
+
+    @can('monitoring.view')
     <li class="nav-item">
         <a href="{{ $horizonUrl }}/monitoring" class="nav-link d-flex align-items-center">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
@@ -16,6 +18,9 @@
             <span>Monitoring</span>
         </a>
     </li>
+    @endcan
+
+    @can('metric.view')
     <li class="nav-item">
         <a href="{{ $horizonUrl }}/metrics" class="nav-link d-flex align-items-center">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
@@ -24,6 +29,9 @@
             <span>Metrics</span>
         </a>
     </li>
+    @endcan
+
+    @can('batch.view')
     <li class="nav-item">
         <a href="{{ $horizonUrl }}/batches" class="nav-link d-flex align-items-center">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
@@ -32,6 +40,9 @@
             <span>Batches</span>
         </a>
     </li>
+    @endcan
+
+    @can('pending-job.view')
     <li class="nav-item">
         <a href="{{ $horizonUrl }}/jobs/pending" class="nav-link d-flex align-items-center">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
@@ -40,6 +51,9 @@
             <span>Pending Jobs</span>
         </a>
     </li>
+    @endcan
+
+    @can('completed-job.view')
     <li class="nav-item">
         <a href="{{ $horizonUrl }}/jobs/completed" class="nav-link d-flex align-items-center">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
@@ -48,6 +62,9 @@
             <span>Completed Jobs</span>
         </a>
     </li>
+    @endcan
+
+    @can('silenced-job.view')
     <li class="nav-item">
         <a href="{{ $horizonUrl }}/jobs/silenced" class="nav-link d-flex align-items-center">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
@@ -56,6 +73,9 @@
             <span>Silenced Jobs</span>
         </a>
     </li>
+    @endcan
+
+    @can('failed-job.view')
     <li class="nav-item">
         <a href="{{ $horizonUrl }}/failed" class="nav-link d-flex align-items-center">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
@@ -64,6 +84,8 @@
             <span>Failed Jobs</span>
         </a>
     </li>
+    @endcan
+
 
     <li class="nav-item mt-4">
         <span class="nav-link px-0 text-uppercase small fw-semibold text-muted">Report</span>
@@ -78,30 +100,41 @@
     </li>
     @endcan
 
+    @can('webhook-event.view')
     <li class="nav-item">
         <a href="{{ route('admin.webhook-event.index') }}" class="nav-link d-flex align-items-center {{ ($active ?? '') === 'webhook-event' ? 'active' : '' }}">
             <i class="fa-solid fa-bolt me-2 fa-fw"></i>
             <span>Webhook Event</span>
         </a>
     </li>
+    @endcan
+
+    @can('webhook-delivery.view')
     <li class="nav-item">
         <a href="{{ route('admin.webhook-delivery.index') }}" class="nav-link d-flex align-items-center {{ ($active ?? '') === 'webhook-delivery' ? 'active' : '' }}">
             <i class="fa-solid fa-envelope me-2 fa-fw"></i>
             <span>Webhook Delivery</span>
         </a>
     </li>
+    @endcan
+
+    @can('endpoint-health.view')
     <li class="nav-item">
         <a href="{{ route('admin.endpoint-health.index') }}" class="nav-link d-flex align-items-center {{ ($active ?? '') === 'endpoint-health' ? 'active' : '' }}">
             <i class="fa-solid fa-stethoscope me-2 fa-fw"></i>
             <span>Endpoints Health</span>
         </a>
     </li>
+    @endcan
+
+    @can('delivery-attempt.view')
     <li class="nav-item">
         <a href="{{ route('admin.delivery-attempt.index') }}" class="nav-link d-flex align-items-center {{ ($active ?? '') === 'delivery-attempt' ? 'active' : '' }}">
             <i class="fa-solid fa-clock me-2 fa-fw"></i>
             <span>Attempt History</span>
         </a>
     </li>
+    @endcan
 
     <li class="nav-item mt-4">
         <span class="nav-link px-0 text-uppercase small fw-semibold text-muted">Admin</span>
@@ -112,12 +145,17 @@
             <span>Users</span>
         </a>
     </li>
+
+    @can('role.view')
     <li class="nav-item">
         <a href="{{ route('admin.role-permission.index') }}" class="nav-link d-flex align-items-center {{ ($active ?? '') === 'role-permission' ? 'active' : '' }}">
             <i class="fa-solid fa-ban me-2 fa-fw"></i>
             <span>Roles & Permissions</span>
         </a>
     </li>
+    @endcan
+
+
     <li class="nav-item">
         <a href="{{ route('admin.user.edit', Auth::user()->id) }}" class="nav-link d-flex align-items-center {{ ($active ?? '') === 'user' ? 'active' : '' }}">
             <i class="fa-solid fa-user me-2 fa-fw"></i>

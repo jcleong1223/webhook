@@ -121,18 +121,4 @@ Route::middleware(['auth', 'role:super-administrator|support-administrator|tenan
             Route::delete('/destroy-permission/{id}', [RolePermissionController::class, 'destroyPermission'])
                 ->middleware('permission:permission.delete')->whereNumber('id')->name('delete-permission');
         });
-
-
-        // Super-admin only: internal API client credentials.
-
-
-        /*
-         * Future pages — protect each with its permission, and scope lists with ->visibleTo($user):
-         * Route::get('webhook-events', ...)->middleware('permission:webhook-events.view')->name('webhook-events.index');
-         * Route::get('deliveries', ...)->middleware('permission:deliveries.view')->name('deliveries.index');
-         * Route::post('deliveries/{delivery}/redeliver', ...)->middleware('permission:events.redeliver')->name('deliveries.redeliver');
-         * Route::post('deliveries/{delivery}/cancel', ...)->middleware('permission:deliveries.cancel')->name('deliveries.cancel');
-         * Route::get('endpoint-health', ...)->middleware('permission:endpoint-health.view')->name('endpoint-health.index');
-         * Route::get('audit-logs', ...)->middleware('permission:audit-logs.view')->name('audit-logs.index');
-         */
     });
