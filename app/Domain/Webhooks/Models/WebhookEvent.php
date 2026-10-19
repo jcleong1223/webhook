@@ -15,6 +15,7 @@ class WebhookEvent extends Model
     protected $keyType = 'string';
 
     protected $fillable = [
+        'internal_api_client_id',
         'tenant_id',
         'tenant_code',
         'merchant_id',

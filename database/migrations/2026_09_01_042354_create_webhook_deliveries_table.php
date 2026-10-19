@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('webhook_deliveries', function (Blueprint $table) {
             // Prefixed ULID primary key, e.g. dlv_01K0HJW3FMQWQ9 (spec §9.4)
             $table->string('id', 30)->primary();
+            $table->unsignedBigInteger('internal_api_client_id');
             $table->string('tenant_id', 50);
             $table->string('webhook_event_id', 30);
             $table->foreign('webhook_event_id')->references('id')->on('webhook_events')->cascadeOnDelete();

@@ -10,6 +10,7 @@ class WebhookDeliveryAttempt extends Model
     public $timestamps = false;
 
     protected $fillable = [
+        'internal_api_client_id',
         'tenant_id',
         'delivery_id',
         'attempt_number',

@@ -3,6 +3,7 @@
 namespace App\Domain\Webhooks\Actions;
 
 use App\Domain\Webhooks\Jobs\DeliverWebhookJob;
+use App\Domain\Webhooks\Models\InternalApiClient;
 use App\Domain\Webhooks\Models\WebhookDelivery;
 use App\Domain\Webhooks\Models\WebhookEndpointSnapshot;
 use App\Domain\Webhooks\Models\WebhookEvent;
@@ -30,8 +31,14 @@ class AcceptWebhookEvent
         }
 
         try {
-            [$event, $delivery] = DB::transaction(function () use ($data) {
+
+            $clientId = request()->header('X-SGDP-Client-Id');
+            $clientSource = request()->header('X-SGDP-Source');
+            $client = InternalApiClient::active()->where('client_id', $clientId)->where('name', $clientSource)->first();
+
+            [$event, $delivery] = DB::transaction(function () use ($data, $client) {
                 $snapshot = WebhookEndpointSnapshot::create([
+                    'internal_api_client_id' => $client->id,
                     'tenant_id' => $data['tenant']['id'],
                     'legacy_webhook_id' => $data['endpoint']['legacy_webhook_id'],
                     'name' => $data['endpoint']['name'],
@@ -45,9 +52,10 @@ class AcceptWebhookEvent
                 ]);
 
                 $event = WebhookEvent::create([
+                    'internal_api_client_id' => $client->id,
                     'tenant_id' => $data['tenant']['id'],
                     'tenant_code' => $data['tenant']['code'] ?? null,
-                    'merchant_id' => $data['merchant']['id'],
+                    'merchant_id' => $data['merchant']['id'] ?? null,
                     'merchant_name' => $data['merchant']['name'] ?? null,
                     'source_system' => $data['source']['system'],
                     'source_instance_id' => $data['source']['instance_id'],
@@ -63,6 +71,7 @@ class AcceptWebhookEvent
                 ]);
 
                 $delivery = WebhookDelivery::create([
+                    'internal_api_client_id' => $client->id,
                     'tenant_id' => $data['tenant']['id'],
                     'webhook_event_id' => $event->id,
                     'endpoint_snapshot_id' => $snapshot->id,

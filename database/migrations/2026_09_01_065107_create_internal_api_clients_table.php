@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('internal_api_clients', function (Blueprint $table) {
             $table->id();
             $table->string('client_id', 50)->unique();
+            $table->string('tenant_string', 100)->nullable();
             $table->string('name', 100);
             $table->text('secret_encrypted');
             $table->json('allowed_ips')->nullable();

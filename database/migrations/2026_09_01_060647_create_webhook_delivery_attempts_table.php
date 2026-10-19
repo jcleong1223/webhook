@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('webhook_delivery_attempts', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('internal_api_client_id');
             $table->string('tenant_id', 50);
             $table->string('delivery_id', 30);
             $table->foreign('delivery_id')->references('id')->on('webhook_deliveries')->cascadeOnDelete();

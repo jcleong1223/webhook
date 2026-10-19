@@ -16,6 +16,7 @@ class WebhookDelivery extends Model
     protected $keyType = 'string';
 
     protected $fillable = [
+        'internal_api_client_id',
         'tenant_id',
         'webhook_event_id',
         'endpoint_snapshot_id',

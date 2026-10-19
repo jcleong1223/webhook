@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 class WebhookEndpointSnapshot extends Model
 {
     protected $fillable = [
+        'internal_api_client_id',
         'tenant_id',
         'legacy_webhook_id',
         'name',

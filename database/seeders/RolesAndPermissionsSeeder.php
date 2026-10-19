@@ -20,22 +20,35 @@ class RolesAndPermissionsSeeder extends Seeder
         app()[PermissionRegistrar::class]->forgetCachedPermissions();
 
         $permissions = [
-            'tenants.view',
-            'webhook-events.view',
-            'deliveries.view',
-            'deliveries.cancel',
-            'endpoint-health.view',
-            'events.redeliver',
-            'api-clients.manage',
-            'queue-health.view',
-            'system-metrics.view',
-            'audit-logs.view',
-            'payloads.view-sanitized',
-            'secrets.view-raw',
-            'support-notes.create',
-            'retry-rules.manage',
-            'webhooks.test',
-            'responses.view-sanitized',
+            'user.view',
+            'user.view-any',
+            'user.create',
+            'user.update',
+            'user.update-any',
+            'user.delete',
+            'role.view',
+            'role.view-any',
+            'role.create',
+            'role.update',
+            'role.delete',
+            'permission.view',
+            'permission.create',
+            'permission.delete',
+            'monitoring.view',
+            'monitoring.view-any',
+            'monitoring.manage',
+            'metric.view',
+            'metric.view-any',
+            'batch.view',
+            'batch.view-any',
+            'pending-job.view',
+            'pending-job.view-any',
+            'completed-job.view',
+            'completed-job.view-any',
+            'silenced-job.view',
+            'silenced-job.view-any',
+            'failed-job.view',
+            'failed-job.view-any',
         ];
 
         foreach ($permissions as $permission) {
@@ -43,28 +56,32 @@ class RolesAndPermissionsSeeder extends Seeder
         }
 
         // Super administrator — everything (also short-circuited by Gate::before).
-        Role::findOrCreate('super-administrator', 'web')->syncPermissions($permissions);
+        Role::findOrCreate('super-administrator', 'web');
 
         // Support administrator — investigation only; no secrets/credentials/retry rules.
         Role::findOrCreate('support-administrator', 'web')->syncPermissions([
-            'webhook-events.view',
-            'deliveries.view',
-            'payloads.view-sanitized',
-            'responses.view-sanitized',
-            'events.redeliver',
-            'endpoint-health.view',
-            'support-notes.create',
+            'user.view',
+            'user.update',
+            'monitoring.view',
+            'metric.view',
+            'batch.view',
+            'pending-job.view',
+            'completed-job.view',
+            'failed-job.view',
+            'silenced-job.view',
         ]);
 
         // Tenant administrator — scoped to own tenant (enforced in policies).
         Role::findOrCreate('tenant-administrator', 'web')->syncPermissions([
-            'webhook-events.view',
-            'deliveries.view',
-            'endpoint-health.view',
-            'events.redeliver',
-            'payloads.view-sanitized',
-            'responses.view-sanitized',
-            'webhooks.test',
+            'user.view',
+            'user.update',
+            'monitoring.view',
+            'metric.view',
+            'batch.view',
+            'pending-job.view',
+            'completed-job.view',
+            'failed-job.view',
+            'silenced-job.view',
         ]);
     }
 }

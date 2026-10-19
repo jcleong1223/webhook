@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class WebhookAlert extends Model
 {
     protected $fillable = [
+        'internal_api_client_id',
         'tenant_id',
         'delivery_id',
         'endpoint_health_id',

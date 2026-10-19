@@ -14,10 +14,13 @@ return new class extends Migration
         Schema::create('webhook_events', function (Blueprint $table) {
             // Prefixed ULID primary key, e.g. evt_01K0HJVY8SD6AQN51RN17G9K7A (spec §9.4)
             $table->string('id', 30)->primary();
+            $table->unsignedBigInteger('internal_api_client_id');
             $table->string('tenant_id', 50);
             $table->string('tenant_code', 50)->nullable();
-            $table->string('merchant_id');
+            $table->string('merchant_id', 50)->nullable();
             $table->string('merchant_name', 100)->nullable();
+            $table->string('outlet_id', 50)->nullable();
+            $table->string('outlet_name', 100)->nullable();
             $table->string('source_system', 50);
             $table->string('source_instance_id', 50);
             $table->string('source_event_id', 100);

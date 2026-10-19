@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('webhook_endpoint_snapshots', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('internal_api_client_id');
             $table->string('tenant_id', 50);
             $table->string('legacy_webhook_id', 50);
             $table->string('name', 100);

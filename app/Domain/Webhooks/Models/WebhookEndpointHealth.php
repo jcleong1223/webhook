@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 class WebhookEndpointHealth extends Model
 {
     protected $fillable = [
+        'internal_api_client_id',
         'tenant_id',
         'legacy_webhook_id',
         'endpoint_url_hash',

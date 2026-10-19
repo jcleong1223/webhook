@@ -11,6 +11,7 @@ class InternalApiClient extends Model
     use SoftDeletes;
 
     protected $fillable = [
+        'internal_api_client_id',
         'client_id',
         'name',
         'secret_encrypted',

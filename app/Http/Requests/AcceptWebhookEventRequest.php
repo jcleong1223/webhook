@@ -31,13 +31,16 @@ class AcceptWebhookEventRequest extends FormRequest
             'source.event_id' => 'required|string|max:100',
             'source.occurred_at' => 'required|date',
 
-            /****** Tenant and merchant ******/
+            /****** Tenant, merchant and outlet ******/
             'tenant' => 'required|array',
             'tenant.id' => 'required|string|max:50',
             'tenant.code' => 'nullable|string|max:50',
-            'merchant' => 'required|array',
-            'merchant.id' => 'required|string|max:50',
+            'merchant' => 'nullable|array',
+            'merchant.id' => 'nullable|string|max:50',
             'merchant.name' => 'nullable|string|max:100',
+            'outlet' => 'required|array',
+            'outlet.outlet_id' => 'required|string|max:50',
+            'outlet.outlet_name' => 'nullable|string|max:100',
 
             /****** Event ******/
             'event' => 'required|array',
